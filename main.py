@@ -14,8 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.appengine.ext import webapp
+import logging
+
+from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
+
+import tms.models as m
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
@@ -23,8 +27,27 @@ class MainHandler(webapp.RequestHandler):
             template.render('index.html',{})
         )
 
+    def post(self):
+        logging.info('Post')
+        load = m.Payload(address=None,
+            longitude=float(self.request.get('long')),
+            latitude=float(self.request.get('lat')))
+        load.put()
+        logging.info('Posted')
+        self.redirect('/add_payload')
+
+
+class ShowPayloads(webapp.RequestHandler):
+    def get(self):
+        payload_q = db.GqlQuery('SELECT * FROM Payload')
+        logging.info(payload_q)
+        for payload in payload_q:
+            logging.info(payload)
+
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler)],
+    application = webapp.WSGIApplication([('/', MainHandler),
+                                          ('/add_payload', MainHandler),
+                                          ('/show', ShowPayloads)],
                                          debug=True)
     util.run_wsgi_app(application)
 
