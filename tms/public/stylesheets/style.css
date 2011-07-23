@@ -2,3 +2,12 @@ body
 {
     background-color:grey;
 }
+
+#map
+{
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+}
