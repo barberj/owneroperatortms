@@ -2,13 +2,20 @@
     <head>
         <title>Owner Operator TMS</title>
         <link rel=StyleSheet href="stylesheets/style.css" type="text/css" media=screen>
-        <script src="http://maps.google.com/maps/api/js?sensor=true" />
-        <script src="tms/public/js/tms.js" />
+        <script src="http://maps.google.com/maps/api/js?sensor=true" ></script>
+        <script language="javascript">
+            console.log('Getting the map');
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 3,
+                center: new google.maps.LatLng(33.7477123,-84.376682),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+            console.log('Ready to place Markers');
+        </script>
     </head>
     <body>
-        <script language="javascript">
-            display();
-        </script>
+        Test
         <div id=map />
+        Test
     </body>
 </html>
