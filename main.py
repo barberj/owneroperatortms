@@ -39,9 +39,10 @@ class MainHandler(webapp.RequestHandler):
 class ShowPayloads(webapp.RequestHandler):
     def get(self):
         payload_q = db.GqlQuery('SELECT * FROM Payload')
-        logging.info(payload_q)
         for payload in payload_q:
+            self.response.out.write("%s<br />" % payload)
             logging.info(payload)
+            logging.info(payload.properties())
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
