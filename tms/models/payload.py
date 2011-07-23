@@ -10,11 +10,8 @@ class Payload(db.Model):
     latitude = db.FloatProperty()
     longitude = db.FloatProperty()
 
-    def __init__(self,**kwargs):
-        logging.info('Initializing a payload')
-        logging.info('Lat %s', kwargs['latitude'])
-        logging.info('Long %s', kwargs['longitude'])
-        db.Model.__init__(self,**kwargs)
-        self.address = kwargs['address']
-        self.longitute = kwargs['longitude']
-        self.latitude = kwargs['latitude']
+    def __str__(self):
+        """
+        Return string representation for Payload object
+        """
+        return 'Latitude: %s, Longitude %s' % ( self.latitude, self.longitude )
