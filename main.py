@@ -29,9 +29,8 @@ class MainHandler(webapp.RequestHandler):
 
     def post(self):
         logging.info('Post')
-        load = m.Payload(address=None,
-            longitude=float(self.request.get('long')),
-            latitude=float(self.request.get('lat')))
+        load = m.Payload(longitude=float(self.request.get('long')),
+                         latitude=float(self.request.get('lat')))
         load.put()
         logging.info('Posted')
         self.redirect('/add_payload')
