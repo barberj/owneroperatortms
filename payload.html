@@ -5,12 +5,15 @@
     </head>
     <body>
         <form action="/add_payload" method="post" >
-        Latitude: <input type="text" name="lat" />&nbsp;Longitude: <input type="text" name="long" /><br />
-        <input type="submit" value="POST"/>
+             Latitude: <input type="text" name="lat" />&nbsp;Longitude: <input type="text" name="long" /><br />
+            <input type="submit" value="POST"/>
         </form>
         <form action="/get_payload" method="post" >
-        Payload: <input type="text" name="id" /><br />
-        <input type="submit" value="POST"/>
+            Payload: <input type="text" name="id" /><br />
+            <input type="submit" value="GET"/>
+        </form>
+        <form action="/show" method="get" >
+            <input type="submit" value="SHOW ALL"/>
         </form>
     </body>
 </html>
