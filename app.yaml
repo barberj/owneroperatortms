@@ -10,5 +10,9 @@ handlers:
 - url: /js
   static_dir: tms/public/js
 
+- url: /payload.html
+  static_files: payload.html
+  upload: payload.html
+
 - url: .*
   script: main.py
