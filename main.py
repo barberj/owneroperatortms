@@ -42,11 +42,17 @@ class ShowPayloads(webapp.RequestHandler):
         for payload in payload_q:
             self.response.out.write("%s<br />" % payload)
             logging.info(payload)
-            logging.info(payload.properties())
+
+class GetPayload(webapp.RequestHandler):
+    def post(self):
+        payload = m.Payload.get_by_id(int(self.request.get('id')))
+        self.response.out.write("%s<br />" % payload)
+        logging.info(payload)
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/add_payload', MainHandler),
+                                          ('/get_payload', GetPayload),
                                           ('/show', ShowPayloads)],
                                          debug=True)
     util.run_wsgi_app(application)
