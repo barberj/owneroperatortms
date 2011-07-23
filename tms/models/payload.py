@@ -14,4 +14,4 @@ class Payload(db.Model):
         """
         Return string representation for Payload object
         """
-        return 'Latitude: %s, Longitude %s' % ( self.latitude, self.longitude )
+        return 'Payload[%s] Latitude: %s, Longitude %s' % ( self.key().id(), self.latitude, self.longitude )
