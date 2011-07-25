@@ -43,6 +43,9 @@ class ShowPayloads(webapp.RequestHandler):
         payload_q = db.GqlQuery('SELECT * FROM Payload')
         for payload in payload_q:
             self.response.out.write("%s<br />" % payload)
+            self.response.out.write("Created: %s<br />" % payload.created_at)
+            self.response.out.write("Updated: %s<br />" % payload.updated_at)
+            self.response.out.write("Addr: %s<br />" % payload.pickup_address)
             logging.info(payload)
 
 class GetPayload(webapp.RequestHandler):
@@ -51,10 +54,19 @@ class GetPayload(webapp.RequestHandler):
         self.response.out.write("%s<br />" % payload)
         logging.info(payload)
 
+class UpdatePayload(webapp.RequestHandler):
+    def post(self):
+        payload = m.Payload.get_by_id(int(self.request.get('id')))
+        payload.pickup_address = self.request.get('addr')
+        payload.put()
+        self.response.out.write("%s<br />" % payload)
+        logging.info(payload)
+
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/add_payload', MainHandler),
                                           ('/get_payload', GetPayload),
+                                          ('/update_payload', UpdatePayload),
                                           ('/show', ShowPayloads)],
                                          debug=True)
     util.run_wsgi_app(application)
