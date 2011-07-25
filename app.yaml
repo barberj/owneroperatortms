@@ -1,4 +1,4 @@
-application: tms
+application: owneroperatortms
 version: 1
 runtime: python
 api_version: 1
@@ -10,7 +10,7 @@ handlers:
 - url: /js
   static_dir: tms/public/js
 
-- url: /payload.html
+- url: /payload.*
   static_files: payload.html
   upload: payload.html
 
