@@ -5,7 +5,6 @@ Payload model
 """
 
 import logging
-from datetime import datetime
 
 from google.appengine.ext import db
 
