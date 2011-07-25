@@ -5,6 +5,7 @@ Payload model
 """
 
 import logging
+from datetime import datetime
 
 from google.appengine.ext import db
 
@@ -16,8 +17,8 @@ class Payload(db.Model):
     pickup_address = db.StringProperty()
     delivery_address = db.StringProperty()
 
-    created_at = db.DateTimeProperty()
-    updated_at = db.DateTimeProperty()
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
     delivered_at = db.DateTimeProperty()
 
     latitude = db.FloatProperty()
