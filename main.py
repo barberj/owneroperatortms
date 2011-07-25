@@ -23,8 +23,10 @@ import tms.models as m
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
+        payload_q = db.GqlQuery('SELECT * FROM Payload')
+        payloads = [payload for payload in payload_q]
         self.response.out.write(
-            template.render('index.html',{})
+            template.render('index.html',{'payloads': payloads})
         )
 
     def post(self):

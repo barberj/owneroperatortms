@@ -14,6 +14,9 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             });
             console.log('Ready to place Markers');
+            {% for payload in payloads %}
+            new google.maps.Marker({map: map, position: new google.maps.LatLng({{payload.latitude}},{{payload.longitude}})});
+            {% endfor %}
         </script>
     </body>
 </html>
