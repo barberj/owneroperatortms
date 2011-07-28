@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 import logging
+import urllib
+import json
 
 from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
@@ -58,8 +60,21 @@ class UpdatePayload(webapp.RequestHandler):
     def post(self):
         payload = m.Payload.get_by_id(int(self.request.get('id')))
         payload.pickup_address = self.request.get('addr')
+
+        # geocode
+        # http://code.google.com/apis/maps/documentation/geocoding/index.html
+        # http://developer.yahoo.com/python/python-rest.html
+        #url='http://maps.googleapis.com/maps/api/geocode/json'
+        #params = urllib.urlencode ({
+        #    'address': urllib.quote(payload.pickup_address),
+        #    'sensor':'true' 
+        #})
+        #print params
+        url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=true' % urllib.quote(payload.pickup_address)
+        jsondata = urllib.urlopen(url).read()
         payload.put()
-        self.response.out.write("%s<br />" % payload)
+        decoded = json.loads(jsondata)
+        self.response.out.write("%s<br />%s" % (payload, decoded))
         logging.info(payload)
 
 def main():
