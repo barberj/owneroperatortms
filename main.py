@@ -16,7 +16,7 @@
 #
 import logging
 import urllib
-import json
+import simplejson as json
 
 from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
@@ -74,7 +74,10 @@ class UpdatePayload(webapp.RequestHandler):
         jsondata = urllib.urlopen(url).read()
         payload.put()
         decoded = json.loads(jsondata)
-        self.response.out.write("%s<br />%s" % (payload, decoded))
+        lat = decoded['results'][0]['geometry']['location']['lat']
+        lng = decoded['results'][0]['geometry']['location']['lng']
+        self.response.out.write("%s<br />%s %s" % (payload, lat, lng))
+        #self.response.out.write("%s<br />%s" % (payload, decoded))
         logging.info(payload)
 
 def main():
