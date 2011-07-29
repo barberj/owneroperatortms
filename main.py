@@ -80,11 +80,11 @@ class addAddrPayload(webapp.RequestHandler):
         url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=true' % urllib.quote(payload.pickup_address)
         #print url
         jsondata = urllib.urlopen(url).read()
-        print jsondata
         decoded = json.loads(jsondata)
         payload.latitude = decoded['results'][0]['geometry']['location']['lat']
         payload.longitude = decoded['results'][0]['geometry']['location']['lng']
         payload.put()
+
         self.redirect('/')
 
 def main():
