@@ -60,24 +60,8 @@ class UpdatePayload(webapp.RequestHandler):
     def post(self):
         payload = m.Payload.get_by_id(int(self.request.get('id')))
         payload.pickup_address = self.request.get('addr')
-
-        # geocode
-        # http://code.google.com/apis/maps/documentation/geocoding/index.html
-        # http://developer.yahoo.com/python/python-rest.html
-        #url='http://maps.googleapis.com/maps/api/geocode/json'
-        #params = urllib.urlencode ({
-        #    'address': urllib.quote(payload.pickup_address),
-        #    'sensor':'true' 
-        #})
-        #print params
-        url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=true' % urllib.quote(payload.pickup_address)
-        jsondata = urllib.urlopen(url).read()
         payload.put()
-        decoded = json.loads(jsondata)
-        lat = decoded['results'][0]['geometry']['location']['lat']
-        lng = decoded['results'][0]['geometry']['location']['lng']
-        self.response.out.write("%s<br />%s %s" % (payload, lat, lng))
-        #self.response.out.write("%s<br />%s" % (payload, decoded))
+        self.response.out.write("%s<br />%s %s" % (payload))
         logging.info(payload)
 
 class addAddrPayload(webapp.RequestHandler):
@@ -87,20 +71,21 @@ class addAddrPayload(webapp.RequestHandler):
         # geocode
         # http://code.google.com/apis/maps/documentation/geocoding/index.html
         # http://developer.yahoo.com/python/python-rest.html
-        url='http://maps.googleapis.com/maps/api/geocode/json'
-        params = urllib.urlencode ((
-            ('address', payload.pickup_address),
-            ('sensor','true')
-        ))
-        print params
-        #url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=true' % urllib.quote(payload.pickup_address)
-        print url
-        jsondata = urllib.urlopen(url,params).read()
+        # url='http://maps.googleapis.com/maps/api/geocode/json'
+        # params = urllib.urlencode ((
+        #     ('address', payload.pickup_address),
+        #    ('sensor','true')
+        #))
+        #print params
+        url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=true' % urllib.quote(payload.pickup_address)
+        #print url
+        jsondata = urllib.urlopen(url).read()
         print jsondata
         decoded = json.loads(jsondata)
         payload.latitude = decoded['results'][0]['geometry']['location']['lat']
         payload.longitude = decoded['results'][0]['geometry']['location']['lng']
         payload.put()
+        self.redirect('/')
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
