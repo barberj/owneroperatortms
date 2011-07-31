@@ -6,9 +6,14 @@ body
 #map
 {
     position: absolute;
-    top: 50px;
+    top: 30px;
     left: 0px;
     height: 100%;
     width: 100%;
-    background-color:red;
+}
+
+#toolbar
+{
+    width: 100%;
+    height: 30px;
 }

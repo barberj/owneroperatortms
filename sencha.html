@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title id='title'>HTML Page setup Tutorial</title>
+
+        <!-- ** CSS ** -->
+        <!-- base library -->
+        <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css" />
+ 
+        <!-- Custom CSS -->
+        <link rel=StyleSheet href="stylesheets/style.css" type="text/css" media=screen>
+
+        <!-- overrides to base library -->
+ 
+
+ 
+        <!-- ** Javascript ** -->
+        <!-- ExtJS library: base/adapter -->
+        <script type="text/javascript" src="extjs/builds/ext-core.js"></script>
+        <!-- ExtJS library: all widgets -->
+        <script type="text/javascript" src="extjs/ext-all-debug.js"></script>
+ 
+        <!-- overrides to library -->
+ 
+        <!-- extensions -->
+ 
+        <!-- page specific -->
+ 
+        <script type="text/javascript">
+ 
+        Ext.onReady(function(){
+
+
+        console.log('Starting menu');
+
+        var menu = Ext.create('Ext.menu.Menu',{
+            id: 'mainMenu',
+            items :[{
+                    text: 'An item',
+                    handler : clickHandler
+                },
+                new Ext.menu.Item({
+                    text: 'Another item',
+                    handler : clickHandler
+                }),
+                '-',
+                new Ext.menu.CheckItem({
+                    text: 'A check item',
+                    checkHandler: checkHandler
+                }),
+                new Ext.menu.CheckItem({
+                    text: 'Another check item',
+                    checkHandler: checkHandler
+                })
+            ]
+        });
+
+        console.log('toolbar');
+        var tb = Ext.create('Ext.toolbar.Toolbar');
+        tb.suspendLayout=true;
+        tb.render('toolbar');
+        tb.suspendLayout=false;
+        tb.doLayout();
+
+        console.log('adding menu items to toolbar');
+        tb.add({
+                text: 'Our first Menu',
+                menu: menu  // assign our menu to this button
+        });
+
+        function clickHandler() {
+            alert('Clicked on a menu item');
+        }
+         
+         function checkHandler() {
+            alert('Checked a menu item');
+        }
+        }); //end onReady
+        </script>
+    </head>
+    <body>
+
+    <div id="container">
+        <div id="toolbar"></div>
+    </div>
+    </body>
+</html>
