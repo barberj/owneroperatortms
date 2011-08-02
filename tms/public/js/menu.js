@@ -1,8 +1,13 @@
+Ext.require(['*']);
+
 Ext.onReady(function(){
     console.log('Building Menu');
 
+    Ext.QuickTips.init();
+
     function clickHandler(){
-        Ext.example.msg('Clicked');
+        console.log('Clicked');
+        Ext.example.msg('Clicked', 'Clicked');
     }
 
     var tb = Ext.create('Ext.toolbar.Toolbar', {
