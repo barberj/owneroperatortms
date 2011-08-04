@@ -23,3 +23,19 @@ handlers:
 
 - url: .*
   script: main.py
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/ext-4.0.2a/examples
+- ^(.*/)?\..*
+- ^(.*/)?.*\.bak$
+- ^(.*/)?.*/ext-4.0.2a/examples
+- ^(.*/)?.*/ext-4.0.2a/welcome
+- ^(.*/)?.*/ext-4.0.2a/build[s]
+- ^(.*/)?.*/ext-4.0.2a/jsbuilder
