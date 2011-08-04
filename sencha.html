@@ -16,72 +16,10 @@
  
         <!-- ** Javascript ** -->
         <!-- ExtJS library: base/adapter -->
-        <script type="text/javascript" src="extjs/builds/ext-core.js"></script>
+        <script type="text/javascript" src="extjs/ext-debug.js"></script>
         <!-- ExtJS library: all widgets -->
-        <script type="text/javascript" src="extjs/ext-all-debug.js"></script>
- 
-        <!-- overrides to library -->
- 
-        <!-- extensions -->
- 
-        <!-- page specific -->
- 
-        <script type="text/javascript">
- 
-        Ext.onReady(function(){
-
-
-        console.log('Starting menu');
-
-        var menu = Ext.create('Ext.menu.Menu',{
-            id: 'mainMenu',
-            items :[{
-                    text: 'An item',
-                    handler : clickHandler
-                },
-                new Ext.menu.Item({
-                    text: 'Another item',
-                    handler : clickHandler
-                }),
-                '-',
-                new Ext.menu.CheckItem({
-                    text: 'A check item',
-                    checkHandler: checkHandler
-                }),
-                new Ext.menu.CheckItem({
-                    text: 'Another check item',
-                    checkHandler: checkHandler
-                })
-            ]
-        });
-
-        console.log('toolbar');
-        var tb = Ext.create('Ext.toolbar.Toolbar');
-        tb.suspendLayout=true;
-        tb.render('toolbar');
-        tb.suspendLayout=false;
-        tb.doLayout();
-
-        console.log('adding menu items to toolbar');
-        tb.add({
-                text: 'Our first Menu',
-                menu: menu  // assign our menu to this button
-        });
-
-        function clickHandler() {
-            alert('Clicked on a menu item');
-        }
-         
-         function checkHandler() {
-            alert('Checked a menu item');
-        }
-        }); //end onReady
-        </script>
+        <script type="text/javascript" src="js/app.js"></script>
     </head>
     <body>
-
-    <div id="container">
-        <div id="toolbar"></div>
-    </div>
     </body>
 </html>
