@@ -8,13 +8,15 @@ import logging
 
 from google.appengine.ext import db
 
-class Trackable(db.Model):
+import geo.geomodel
+
+class Trackable(geo.geomodel.GeoModel):
     """
     Trackable model.
     """
 
-    latitude = db.FloatProperty()
-    longitude = db.FloatProperty()
+    # the location property is related to
+    # the db.GeoPt class
 
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
@@ -23,7 +25,15 @@ class Trackable(db.Model):
         """
         Return string representation for Payload object
         """
-        return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(), 
-                                                            self.latitude, 
-                                                            self.longitude )
+        return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(),
+                                                     self.latitude,
+                                                     self.longitude )
 
+    def set_location(self,lat,lng):
+        """
+        updates the GeoPt location of the trackable
+        does not do .put()
+        """
+
+        self.location = db.GeoPt(lat,lng)
+        self.upate_location()

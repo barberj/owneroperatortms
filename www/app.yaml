@@ -21,8 +21,12 @@ handlers:
   static_files: sencha.html
   upload: sencha.html
 
+- url: /streaming
+  script: main_streaming.py
+
 - url: .*
   script: main.py
+
 
 skip_files:
 - ^(.*/)?app\.yaml
