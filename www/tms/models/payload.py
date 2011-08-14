@@ -30,12 +30,15 @@ class PlannedPayload(Trackable):
     def __str__(self):
         return 'Planned Payload%s' % super(PlannedPayload,self).__str__()
 
-class Payload(PlannedPayload):
+class Payload(Trackable):
     """
     Payload model.
 
     A confirmed payload requiring a pickup and delivery on a schedule.
     """
+
+    pickup_address = db.StringProperty()
+    delivery_address = db.StringProperty()
 
     pickedup_at = db.DateTimeProperty()
     delivered_at = db.DateTimeProperty()
@@ -44,6 +47,9 @@ class Payload(PlannedPayload):
 
     transporter = db.ReferenceProperty(Transporter,
                                        collection_name='payloads')
+
+    operator = db.ReferenceProperty(Operator,
+                                    collection_name='payloads')
 
     def __str__(self):
         return 'Payload%s' % super(PlannedPayload,self).__str__()
