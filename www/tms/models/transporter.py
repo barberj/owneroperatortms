@@ -2,6 +2,7 @@
 """
 Transporter model
 - vehicle that carries from one place to another
+- independent owner operator 
 """
 
 import logging
