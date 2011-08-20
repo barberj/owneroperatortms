@@ -23,7 +23,20 @@
 //  deliveries
 // they will only hold summary / high lvl data
 //   specific data will be pulled w/ ajax requests
-
+Ext.define('BaseModel', {
+    extends: 'Ext.data.Model',
+    idProperty: 'id',
+    fields: [ {name:'id',type:'int'} ],
+    update: function(data) {
+        // simple method to update the record
+        for(k in data) {
+            self.set(k,data[k]);
+        }
+    }
+});
+Ext.define('Transporter', {
+    extends: 'BaseModel'
+});
 
 
 
