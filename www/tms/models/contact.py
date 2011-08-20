@@ -37,6 +37,24 @@ class Contact(db.Model):
         """
         return '%s %s' % (self.first_name, self.last_name)
 
+    def delete(self):
+        """
+        Implementing cascading deletes
+        """
+
+        # delete all relations
+        for email in self.emailaddresses:
+            email.delete()
+
+        for phone_num in self.phone_numbers:
+            phone_num.delete() 
+
+        for address in self.addresses:
+            address.delete()
+
+        # finally delete self 
+        db.delete(self)
+
 class Address(db.Model):
     """
     Address model.
@@ -57,6 +75,21 @@ class EmailAddress(db.Model):
 
     def __str__(self):
         return self.emailaddress
+
+    def delete(self):
+        """
+        Implementing cascading deletes
+        """
+
+        # delete all relations
+        # in reality there should 
+        # only be one user in the set
+        for user in self.user_set:
+            user.delete()
+
+        # finally delete self
+        db.delete(self)
+        
 
 class PhoneNumber(db.Model):
     """
