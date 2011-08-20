@@ -36,4 +36,4 @@ class Trackable(geo.geomodel.GeoModel):
         """
 
         self.location = db.GeoPt(lat,lng)
-        self.upate_location()
+        self.update_location()

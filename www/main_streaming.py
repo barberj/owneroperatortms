@@ -39,8 +39,8 @@ class Main(webapp.RequestHandler):
         template_values = {'channel_token':token,
                            'user':user}
 
-        self.response.out.write(template.render('index_streaming.html'),
-                                template_values)
+        self.response.out.write(template.render('index_streaming.html',
+                                template_values))
 
 
 class SendFullUpdate(webapp.RequestHandler):
@@ -98,8 +98,8 @@ class SendFullUpdate(webapp.RequestHandler):
 
 
 def main():
-    application = webapp.WSGIApplication([('/', Main),
-                                          ('/request_full_update', SendFullUpdate)],
+    application = webapp.WSGIApplication([('/streaming', Main),
+                                          ('/streaming/request_full_update', SendFullUpdate)],
                                          debug=True)
     util.run_wsgi_app(application)
 
