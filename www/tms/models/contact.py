@@ -30,6 +30,8 @@ class Contact(db.Model):
 
     first_name = db.StringProperty()
     last_name = db.StringProperty()
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
     def __str__(self):
         """
@@ -63,6 +65,8 @@ class Address(db.Model):
     address_type = db.ReferenceProperty(PropertyType)
     address = db.PostalAddressProperty()
     contact = db.ReferenceProperty(Contact,collection_name='addresses')
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
 class EmailAddress(db.Model):
     """
@@ -72,6 +76,8 @@ class EmailAddress(db.Model):
     email_type = db.ReferenceProperty(PropertyType)
     emailaddress = db.EmailProperty()
     contact = db.ReferenceProperty(Contact,collection_name='emailaddresses')
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
     def __str__(self):
         return self.emailaddress
@@ -99,6 +105,8 @@ class PhoneNumber(db.Model):
     phone_type = db.ReferenceProperty(PropertyType)
     phone_number = db.PhoneNumberProperty(required=True)
     contact = db.ReferenceProperty(Contact,collection_name='phone_numbers')
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
 class User(db.Model):
     """
@@ -107,3 +115,5 @@ class User(db.Model):
 
     username = db.ReferenceProperty(EmailAddress)
     password = db.StringProperty()
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
