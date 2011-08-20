@@ -49,6 +49,8 @@ Ext.define('PlannedPayload', {
 
 ZOOM_IN_LVL = 4;
 
+///// USER ACTION HANDLERS ///////////////////////////// 
+
 // handle the user clicking a marker
 // we receive a lat/long obj
 function handle_delivery_marker_click(id,loc) {
@@ -62,6 +64,49 @@ function handle_delivery_marker_click(id,loc) {
 function handle_transporter_marker_click(id,loc) {
     // we want to show the bubble
     show_transporter_info(id,loc);
+};
+
+///// END USER ACTION HANDLERS ///////////////////////////// 
+
+
+// gets all delivery data, shows markers
+function show_deliveries() {
+    // get data
+    get_delivery_data(add_delivery_markers);
+};
+
+// adds markers to the map for all deliveries in store
+function add_delivery_markers() {
+    var store = Ext.data.StoreManager.lookup('Delivery');
+    store.each(function(record) {
+        var loc = position: new google.maps.LatLng(record.get('lat'),
+                                                   record.get('long'))
+        // add our marker
+        var marker = add_delivery_marker(loc,store.get('id'));
+        
+        // add the marker ref to our record
+        record.marker = marker;
+    });
+};
+
+// adds a marker for transporter at given loc
+function add_delivery_marker(loc,id) {
+    // add a marker for each record at it's pos
+    var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(record.get('lat'),
+                                         record.get('long')),
+        map: map
+    });
+
+    // create a callback which wraps in the location and id info
+    var c = Ext.bind(handle_delivery_marker_click,
+                     undefined, // scope = window
+                     [id,loc]) // override, not append
+
+    // add a click listener to the marker
+    google.maps.event.addListener(marker, 'click', c);
+
+    return marker;
 };
 
 
@@ -141,11 +186,21 @@ function add_transporter_marker(loc,id) {
 };
 
 // remove the transporter markers and clear the store
-function clear_transporters() {}
-
-// brings up the transports summary info in a marker bubble
-function show_transporters_bubble() {}
+function clear_transporters() {
+    // get store
+    var store = Ext.data.StoreManager.lookup('Transporter');
+    // go through records
+    store.each(function (record) {
+        // remove the marker
+        record.marker.setVisible(false);
+        // TODO: test if this actually removes the marker from map
+        delete record.marker;
+    });
+    // get rid of our transporter records
+    store.removeAll();
+};
 
 // associates a transporter to a delivery
-function assign_transporter() {}
+function assign_transporter(planned_delivery_id,transporter_id) {
 
+};
