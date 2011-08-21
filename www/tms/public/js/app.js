@@ -67,48 +67,7 @@ function handle_transporter_marker_click(id,loc) {
 };
 
 ///// END USER ACTION HANDLERS ///////////////////////////// 
-
-
-// gets all delivery data, shows markers
-function show_deliveries() {
-    // get data
-    get_delivery_data(add_delivery_markers);
-};
-
-// adds markers to the map for all deliveries in store
-function add_delivery_markers() {
-    var store = Ext.data.StoreManager.lookup('Delivery');
-    store.each(function(record) {
-        var loc = position: new google.maps.LatLng(record.get('lat'),
-                                                   record.get('long'))
-        // add our marker
-        var marker = add_delivery_marker(loc,store.get('id'));
-        
-        // add the marker ref to our record
-        record.marker = marker;
-    });
-};
-
-// adds a marker for transporter at given loc
-function add_delivery_marker(loc,id) {
-    // add a marker for each record at it's pos
-    var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(record.get('lat'),
-                                         record.get('long')),
-        map: map
-    });
-
-    // create a callback which wraps in the location and id info
-    var c = Ext.bind(handle_delivery_marker_click,
-                     undefined, // scope = window
-                     [id,loc]) // override, not append
-
-    // add a click listener to the marker
-    google.maps.event.addListener(marker, 'click', c);
-
-    return marker;
-};
-
+//
 
 // zooms the view in on a specific lat / long
 function zoom_on_location(loc) {
@@ -119,88 +78,94 @@ function zoom_on_location(loc) {
     map.setZoom(ZOOM_IN_LVL);
 };
 
-// shows the bubble over the transporter marker
-function show_transporter_info(id,loc) {
-    // get our record so we can grab the marker / content
-    var store = Ext.data.StoreManager.lookup('Transporter');
-    var record = store.getById(id);
-    var info = new google.maps.infoWindow({
-        // TODO: add content
-        content: ['content TODO']
-    });
-    // throw the infoWindow up
-    infoWindow.open(map,record.marker);
-};
+// these are shared functions for adata types that have markers
+// and event handlers
 
-// requests data for the transporter store and
-// throw down markers for all transporters
-function show_transporters(loc) {
-    // first we need to get the transporter info
-    // for this location
-    get_transporter_data(loc, add_transport_markers);
-};
+// show
+//  add_markers
+//  add_marker
+// show_info
+// update_data
+// clear
+// handle marker click
 
-// populate the transporter data
-function get_transporter_data(loc, callback) {
-    // populate the store
-    var store = Ext.data.StoreManager.lookup('Transporter');
-    // load the store, giving the loc param string rep or loc
-    store.load({
-        loc: loc.toString(),
-        callback: callback
-    });
+var DataHandler = function(type) {
+    this.type = type;
 };
+DataHandler.prototype = {
+    // refreshes the data, adds the markers
+    show: function() {
+        this.refresh_data( this.add_markers );
+    },
+    add_markers: function() {
+        // get the type's store
+        var store = this.get_store();
+        // add a marker for each record
+        store.each(function(record) {
+            var loc = position: new google.maps.LatLng(record.get('lat'),
+                                                       record.get('long'))
+            // add our marker
+            var marker = this.add_marker(loc,store.get('id'));
+            
+            // add the marker ref to our record
+            record.marker = marker;
+        });
+    },
+    add_marker: function(loc,record) {
+        // add a marker for each record at it's pos
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(record.get('lat'),
+                                             record.get('long')),
+            map: map
+        });
 
-// using the store, add markers for all transporters
-function add_transporter_markers() {
-    var store = Ext.data.StoreManager.lookup('Transporter');
-    store.each(function(record) {
-        var loc = position: new google.maps.LatLng(record.get('lat'),
-                                                   record.get('long'))
-        // add our marker
-        var marker = add_transporter_marker(loc,store.get('id'));
+        // create a callback which wraps in the location and id info
+        var c = Ext.bind(this.show_info,
+                         this,
+                         [id,loc]) // override, not append
+
+        // add a click listener to the marker
+        google.maps.event.addListener(marker, 'click', c);
+
+        return marker;
         
-        // add the marker ref to our record
-        record.marker = marker;
-    });
+    },
+    handle_marker_click: function(id,loc) {
+        
+    },
+    show_info: function(id) {
+        // get our record so we can grab the marker / content
+        var store = this.get_store();
+        var record = store.getById(id);
+        var info = new google.maps.infoWindow({
+            // TODO: add content
+            content: ['content TODO']
+        });
+        // throw the infoWindow up
+        infoWindow.open(map,record.marker);
+    },
+    refresh_data: function(callback) {
+        // reload the store's data
+        this.get_store().load({
+            callback:callback,
+            scope:this
+        });
+    },
+    clear: function() {
+        var store = this.get_store();
+        store.each(function(record) {
+            // remove the marker
+            record.marker.setVisible(false);
+            // TODO: test if this actually removes the marker from map
+            delete record.marker;
+        });
+        // clear our the store's data
+        store.removeAll();
+    },
+    get_store() {
+        return Ext.data.StoreManager.lookup(this.type);
+    }
 };
 
-// adds a marker for transporter at given loc
-function add_transporter_marker(loc,id) {
-    // add a marker for each record at it's pos
-    var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(record.get('lat'),
-                                         record.get('long')),
-        map: map
-    });
 
-    // create a callback which wraps in the location and id info
-    var c = Ext.bind(handle_transporter_marker_click,
-                     undefined, // scope = window
-                     [id,loc]) // override, not append
 
-    // add a click listener to the marker
-    google.maps.event.addListener(marker, 'click', c);
-
-    return marker;
-};
-
-// remove the transporter markers and clear the store
-function clear_transporters() {
-    // get store
-    var store = Ext.data.StoreManager.lookup('Transporter');
-    // go through records
-    store.each(function (record) {
-        // remove the marker
-        record.marker.setVisible(false);
-        // TODO: test if this actually removes the marker from map
-        delete record.marker;
-    });
-    // get rid of our transporter records
-    store.removeAll();
-};
-
-// associates a transporter to a delivery
-function assign_transporter(planned_delivery_id,transporter_id) {
-
-};
