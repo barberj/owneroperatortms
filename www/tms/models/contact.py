@@ -81,27 +81,22 @@ class EmailAddress(db.Model):
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
 
-    def before_put(self,*args,**kwargs):
+    def before_put(self):
         """
         Before we save to the Datastore we want to
         validate its an email
         """
 
-
-        for arg in args:
-            print arg
-        for kwarg in kwargs:
-            print kwarg
         validator = Email()
-        return validator(emailaddress)
+        return validator(self.emailaddress)
 
-    def put(self,*args,**kwargs):
+    def put(self):
         """
         Save to Datastore
         """
         
-        if self.before_put(*args,**kwargs):
-            super(EmailAddress,self).put(*args,**kwargs)
+        if self.before_put():
+            super(EmailAddress,self).put()
         else:
             raise Exception('Invalid EmailAddress')
 
