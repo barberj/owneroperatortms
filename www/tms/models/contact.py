@@ -10,6 +10,8 @@ User model
 import logging
 from google.appengine.ext import db
 
+from lepl.apps.rfc3696 import Email
+
 class PropertyType(db.Model):
     """
     PropertyType model. Is it Work, Home, Cell or Other.
@@ -78,6 +80,30 @@ class EmailAddress(db.Model):
     contact = db.ReferenceProperty(Contact,collection_name='emailaddresses')
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
+
+    def before_put(self,*args,**kwargs):
+        """
+        Before we save to the Datastore we want to
+        validate its an email
+        """
+
+
+        for arg in args:
+            print arg
+        for kwarg in kwargs:
+            print kwarg
+        validator = Email()
+        return validator(emailaddress)
+
+    def put(self,*args,**kwargs):
+        """
+        Save to Datastore
+        """
+        
+        if self.before_put(*args,**kwargs):
+            super(EmailAddress,self).put(*args,**kwargs)
+        else:
+            raise Exception('Invalid EmailAddress')
 
     def __str__(self):
         return self.emailaddress
