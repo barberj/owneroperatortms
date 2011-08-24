@@ -12,6 +12,17 @@ from google.appengine.ext import db
 
 from lepl.apps.rfc3696 import Email
 
+# TY Nick: http://blog.notdot.net/2010/04/Pre--and-post--put-hooks-for-Datastore-models
+old_put = db.Model.put
+def hooked_put(model, **kwargs):
+    if isinstance(model, EmailAddress):
+        print 'Hi'
+    model.before_put()
+    old_put(model, **kwargs)
+    if isinstance(model, EmailAddress):
+        model.after_put()
+db.Model.put = hooked_put
+
 class PropertyType(db.Model):
     """
     PropertyType model. Is it Work, Home, Cell or Other.
@@ -95,13 +106,14 @@ class EmailAddress(db.Model):
         validator = Email()
         return validator(self.emailaddress)
 
-    def put(self):
+    def put(self,**kwargs):
         """
         Save to Datastore
         """
         
         if self.before_put():
-            super(EmailAddress,self).put()
+            print 'execute db.put'
+            super(EmailAddress,self).put(**kwargs)
         else:
             raise InvalidEmailAddress() 
 
