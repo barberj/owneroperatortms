@@ -70,6 +70,11 @@ class Address(db.Model):
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
 
+class InvalidEmailAddress(Exception):
+    
+    def __str__(self):
+        return "Invalid EmailAddress"
+
 class EmailAddress(db.Model):
     """
     EmailAddress model.
@@ -98,7 +103,7 @@ class EmailAddress(db.Model):
         if self.before_put():
             super(EmailAddress,self).put()
         else:
-            raise Exception('Invalid EmailAddress')
+            raise InvalidEmailAddress() 
 
     def __str__(self):
         return self.emailaddress
