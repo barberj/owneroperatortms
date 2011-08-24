@@ -29,6 +29,19 @@ class testModels(unittest.TestCase):
         self.testbed.deactivate()    
 
     def test_1(self):
+        """
+        Test Email
+        """
 
+        # Test validator
+        self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk').put)
+        self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk.com').put)
+        #self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk.@junk.com').put)
+        #self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='.junk@junk.com').put)
+        self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk@.junk.com').put)
+        self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk@..com').put)
+        self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk@junk').put)
+        #self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='.@junk.com').put)
+    
         justin = m.Contact(first_name='Justin',last_name='Barber').put()
         self.assertEquals('Justin', m.Contact.get(justin).first_name)
