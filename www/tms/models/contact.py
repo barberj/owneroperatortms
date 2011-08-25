@@ -10,18 +10,9 @@ User model
 import logging
 from google.appengine.ext import db
 
-from lepl.apps.rfc3696 import Email
+#from lepl.apps.rfc3696 import Email
 
-# TY Nick: http://blog.notdot.net/2010/04/Pre--and-post--put-hooks-for-Datastore-models
-old_put = db.Model.put
-def hooked_put(model, **kwargs):
-    if isinstance(model, EmailAddress):
-        print 'Hi'
-    model.before_put()
-    old_put(model, **kwargs)
-    if isinstance(model, EmailAddress):
-        model.after_put()
-db.Model.put = hooked_put
+from tms.lib.utilities import HookedModel
 
 class PropertyType(db.Model):
     """
@@ -86,7 +77,8 @@ class InvalidEmailAddress(Exception):
     def __str__(self):
         return "Invalid EmailAddress"
 
-class EmailAddress(db.Model):
+class EmailAddress(HookedModel):
+#class EmailAddress(db.Model):
     """
     EmailAddress model.
     """
@@ -103,8 +95,9 @@ class EmailAddress(db.Model):
         validate its an email
         """
 
-        validator = Email()
-        return validator(self.emailaddress)
+        #validator = Email()
+        #return validator(self.emailaddress)
+        return True
 
     def put(self,**kwargs):
         """
