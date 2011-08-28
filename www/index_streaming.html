@@ -1,0 +1,180 @@
+<html>
+    <head>
+        <title>Owner Operator TMS</title>
+
+        <!-- ** CSS ** -->
+        <!-- base library -->
+        <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all-gray.css" />
+ 
+        <!-- Custom CSS -->
+        <link rel=StyleSheet href="stylesheets/example.css" type="text/css" media=screen> 
+        <link rel=StyleSheet href="stylesheets/style.css" type="text/css" media=screen>
+
+        <!-- ** Javascript ** -->
+        <!-- GAE channel lib -->
+        <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+
+        <!-- ExtJS library: base/adapter -->
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+
+        <!-- Google Map JS -->
+        <script src="http://maps.google.com/maps/api/js?sensor=true" ></script>
+
+        <!-- page specific -->
+        <script type="text/javascript" src="js/examples.js"></script>
+        <script type="text/javascript" src="js/menu.js"></script>
+        <script type="text/javascript" src="js/payloadgrid.js"></script>
+
+        <script>
+
+            // MODELS
+            Ext.define('BaseModel', {
+                extends: 'Ext.data.Model',
+                idProperty: 'id',
+                fields: [
+                    {name: 'id', type:'int'}
+                ],
+                update: function(data) {
+                    // updates the data in the record based
+                    // on the associate array passed
+                    for(var k in data) {
+                        this.set(k,data[k]);
+                    };
+                }
+            });
+
+            Ext.define('Trackable', {
+                extends: 'BaseModel',
+                fields: [
+                    {name: 'location'},
+                ]
+            });
+
+            Ext.define('PlannedPayload', {
+                extends: 'Trackable',
+                fields: [
+                    {name: 'pickup_address', type:'string'},
+                    {name: 'delivery_address', type:'string'},
+                ]
+            });
+
+            Ext.define('Payload', {
+                extends: 'PlannedPayload',
+                fields: [
+                    {name: 'pickedup_at', type:'date'},
+                    {name: 'delivered_at', type:'date'},
+                    {name: 'transporter_id', type:'int'}
+                ]
+            });
+
+            Ext.define('Transporter', {
+                extends: 'Trackable',
+            });
+
+            // END MODELS
+
+            // STORES
+            // setup the stores for our models
+            planned_payload_store = new Ext.data.Store({
+                storeId: 'PlannedPayload',
+                model: 'PlannedPayload',
+                autoLoad: false
+            });
+            payload_store = new Ext.data.Store({
+                storeId: 'Payload',
+                model: 'Payload',
+                autoLoad: false
+            });
+            transporter_store = new Ext.data.Store({
+                storeId: 'Transporter',
+                model: 'Transporter',
+                autoLoad: false
+            });
+            // END STORES
+
+            // CHANNEL
+            // requests the current data be sent
+            // via the channel
+            request_full_update = function() {
+                Ext.Ajax.request({
+                    url: '/streaming/send_full_update',
+                    params: {},
+                    success: function(response) {}
+                });
+            };
+
+            // our connection to the server is open
+            on_opened = function() {
+                connected = true;
+                request_full_update();
+            };
+
+            // our connection to the server has been closed
+            on_close = function() {
+                connected = false;
+            };
+
+            // we have received a new msg from the server
+            on_message = function(msg) {
+                // the messages come in json
+                var data = Ext.decode(msg.data);
+
+                // we are going to have stores which are going to
+                // be updated by messages
+                if( !Ext.isEmpty(data.data_update) ) {
+
+                    // find the store this is an update for
+                    var store = Ext.data.StoreManager.lookup(data.data_type);
+
+                    // take action depending on the data's defined action
+                    if( data.action == 'update' ) {
+                        var record = store.getById(data.data.id);
+                        // update the record w/ the new data
+                        record.update(data.data);
+                    };
+
+                    if( data.action == 'add' ) {
+                        // add a new record to the store
+                        store.add(data.data);
+                    };
+
+                    if( data.action == 'delete' ) {
+                        // delete an existing record
+                        var record = store.getById(data.data.id);
+                        store.remove(record);
+                    };
+                }
+
+                // right now we only have store updates coming in over the wire
+                // later we may have other things to do with them
+            };
+
+            // open a new channel to the server using the token we were
+            // rendered with
+            channel = new goog.appengine.Channel('{{ channel_token }}');
+            socket.onopen = on_opened;
+            socket.onmessage = on_message;
+            socket.onerror = on_error;
+            socket.onclose = on_close;
+            socket = channel.open();
+            // END CHANNEL
+        </script>
+    
+    </head>
+    <body>
+        <div id=toolbar />
+        <div id=map />
+        <script language="javascript">
+            console.log('Getting the map');
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 3,
+                center: new google.maps.LatLng(33.7477123,-84.376682),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+            console.log('Ready to place Markers');
+            {% for payload in payloads %}
+            new google.maps.Marker({map: map, position: new google.maps.LatLng({{payload.latitude}},{{payload.longitude}})});
+            {% endfor %}
+        </script>
+    </body>
+</html>

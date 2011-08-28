@@ -9,9 +9,11 @@ import logging
 
 from google.appengine.ext import db
 
-class Transporter(db.Model):
+from trackable import Trackable
+
+class Transporter(Trackable):
     """
     Transporter model.
     """
 
-    created_at = db.DateTimeProperty(auto_now_add=True)
+    user = db.UserProperty()
