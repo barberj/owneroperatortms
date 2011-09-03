@@ -16,5 +16,3 @@ class Transporter(Trackable):
     """
 
     contact = db.ReferenceProperty(Contact, required=True)
-    created_at = db.DateTimeProperty(auto_now_add=True)
-    updated_at = db.DateTimeProperty(auto_now=True)
