@@ -44,7 +44,7 @@ class Contact(db.Model):
 
     first_name = db.StringProperty()
     last_name = db.StringProperty()
-    addresses = db.ListProperty(Address)
+    addresses = db.ListProperty(db.Key)
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
 
