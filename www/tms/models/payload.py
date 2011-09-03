@@ -59,7 +59,7 @@ class Payload(Trackable):
         """
         Return a list of the transporters available near payload.
         """
-        base_query = Transporter.all().filter(available=True)
+        base_query = Transporter.all().filter('available =',True)
         return Transporter.proximity_fetch(base_query,
             self.location,
             max_results=10,
