@@ -55,5 +55,12 @@ class Payload(Trackable):
     def __str__(self):
         return 'Payload%s' % super(PlannedPayload,self).__str__()
 
-    def get_nearby_transporters(self):
-        pass
+    def get_nearby_transporters(self,max_distance=16093):
+        """
+        Return a list of the transporters available near payload.
+        """
+        base_query = Transporter.all().filter(available=True)
+        return Transporter.proximity_fetch(base_query,
+            self.location,
+            max_results=10,
+            max_distance=max_distance) #within 10 miles
