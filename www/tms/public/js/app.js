@@ -53,3 +53,35 @@ function zoom_on_location(loc) {
 // these are shared functions for adata types that have markers
 // and event handlers
 
+Ext.onReady({
+
+    // set our context
+    this = Ext.app = {};
+
+    // create our map
+    Ext.app.map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 3,
+        center: new google.maps.LatLng(33.7477123,-84.376682),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    // instantiate our handleres
+    this.transport_handler = new Ext.TransporterHandler();
+    this.payload_handler = new Ext.PayloadHandler();
+    this.planned_payload_handler = new Ext.PlannedPayloadHandler();
+
+    // read our initial data for the payloads and put up markers
+    this.planned_payload_handler.show_markers();
+    this.payload_handler.show_markers();
+
+    // create our delivery list handler
+    this.delivery_list = Ext.DeliveryList();
+
+    // setup the button
+    Ext.get('toolbar').add(Ext.Button({
+        text: 'Delivery List',
+        handler: this.delivery_list.toggle
+        scope: this.delivery_list
+    });
+
+});

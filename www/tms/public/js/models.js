@@ -3,7 +3,7 @@
 //  deliveries
 // they will only hold summary / high lvl data
 //   specific data will be pulled w/ ajax requests
-Ext.define('BaseModel', {
+Ext.define('Ext.BaseModel', {
     extends: 'Ext.data.Model',
     idProperty: 'id',
     fields: [ {name:'id',type:'int'} ],
@@ -22,7 +22,7 @@ Ext.define('BaseModel', {
         // add a marker for each record at it's pos
         var marker = new google.maps.Marker({
             position: this.get_pos,
-            map: map
+            map: Ext.app.map
         });
 
         // create a callback which wraps the scope
@@ -49,7 +49,7 @@ Ext.define('BaseModel', {
             content: content
         });
         // throw the infoWindow up
-        infoWindow.open(map,this.marker);
+        infoWindow.open(Ext.app.map,this.marker);
     },
     get_bubble_content: function() {
         return ['CONTENT'];
@@ -61,22 +61,24 @@ Ext.define('BaseModel', {
 
 });
 
-Ext.define('Transporter', {
-    extends: 'BaseModel',
+Ext.define('Ext.Transporter', {
+    extends: 'Ext.BaseModel',
 });
 
-Ext.define('Payload', {
-    extends: 'BaseModel',
+Ext.define('Ext.Payload', {
+    extends: 'Ext.BaseModel',
 
     // when our marker is clicked we zoom in on
     // it and than show the transporters
     handle_marker_click: function(loc) {
+        // zoom in on us
         zoom_on_location(loc);
-        transporter_handler.show_markers(loc);
+        // show all the Transporters in the area
+        Ext.app.transporter_handler.show_markers(loc);
     }
 });
 
-Ext.define('PlannedPayload', {
-    extends: 'Payload'
+Ext.define('Ext.PlannedPayload', {
+    extends: 'Ext.Payload'
 });
 

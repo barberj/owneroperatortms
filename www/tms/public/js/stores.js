@@ -7,13 +7,13 @@ var proxy_config = {
     }
 };
 var BaseStore = new Ext.data.Store({
-    model: 'BaseModel',
+    model: 'Ext.BaseModel',
     proxy: proxy_config,
     autoLoad: false
 });
 
-Ext.define('BaseHandler', {
-    override: 'BaseStore',
+Ext.define('Ext.BaseHandler', {
+    override: 'Ext.BaseStore',
 
     // refresh data and put up markers
     show_markers: function(loc) {
@@ -49,33 +49,33 @@ Ext.define('BaseHandler', {
         this.load({
             callback:callback,
             scope:this,
-            // TODO: specify loc params
+            params: loc.toQueryString()
         });
     }
 });
 
 
 // DEFINE and INSTANTIATE our HANDLERS
-Ext.define('TransporterHandler', {
-    override:'BaseHandler'
+Ext.define('Ext.TransporterHandler', {
+    override:'Ext.BaseHandler',
+    proxy: proxy_config.merge({
+        url:'./transporters/list',
+    })
 });
 
-transport_handler = new TransporterHandler();
 
-Ext.define('PayloadHandler', {
-    override:'BaseHandler',
+Ext.define('Ext.PayloadHandler', {
+    override:'Ext.BaseHandler',
     proxy: proxy_config.merge({
         url:'./payloads/list',
     })
 });
 
-payload_handler = new PayloadHandler();
 
-Ext.define('PlannedPayloadHandler', {
-    override:'BaseHandler',
+Ext.define('Ext.PlannedPayloadHandler', {
+    override:'Ext.BaseHandler',
     proxy: proxy_config.merge({
-
+        url:'./plannedpayloads/list',
     })
 });
 
-planned_payload_handler = new PlannedPayloadHandler();
