@@ -22,11 +22,11 @@ class PlannedPayload(Trackable):
     If confirmed would create a Payload.
     """
 
-    pickup_address = db.StringProperty()
-    delivery_address = db.StringProperty()
+    pickup_address = db.ReferenceProperty(Address, collection_name='plannedpayload_pickups')
+    delivery_address = db.ReferenceProperty(Address, collection_name='plannedpayload_deliverys')
 
     broker = db.ReferenceProperty(Broker,
-                                    collection_name='planned_payloads')
+                                    collection_name='planned_payloads', required=True)
 
     def __str__(self):
         return 'Planned Payload%s' % super(PlannedPayload,self).__str__()
@@ -47,7 +47,7 @@ class Payload(Trackable):
     # need references to the broker and transporter
     # and users who manipulate
     broker = db.ReferenceProperty(Broker,
-                                    collection_name='payloads')
+                                    collection_name='payloads', required=True)
 
     transporter = db.ReferenceProperty(Transporter,
                                        collection_name='payloads')
