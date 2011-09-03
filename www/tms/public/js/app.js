@@ -18,47 +18,38 @@
 //
 
 
-// we'll have stores for:
-//  transports
-//  deliveries
-// they will only hold summary / high lvl data
-//   specific data will be pulled w/ ajax requests
-Ext.define('BaseModel', {
-    extends: 'Ext.data.Model',
-    idProperty: 'id',
-    fields: [ {name:'id',type:'int'} ],
-    update: function(data) {
-        // simple method to update the record
-        for(k in data) {
-            self.set(k,data[k]);
-        }
-    }
-});
-Ext.define('Transporter', {
-    extends: 'BaseModel'
-});
 
+ZOOM_IN_LVL = 4;
 
+///// USER ACTION HANDLERS ///////////////////////////// 
 
 // handle the user clicking a marker
-function handle_delivery_marker_click() {}
-function handle_transporter_marker_click() {}
+// we receive a lat/long obj
+function handle_delivery_marker_click(id,loc) {
+    // zoom + center on location
+    zoom_on_location(loc);
 
+    // populate and show our transporters
+    show_transporters(loc);
+};
+
+function handle_transporter_marker_click(id,loc) {
+    // we want to show the bubble
+    show_transporter_info(id,loc);
+};
+
+///// END USER ACTION HANDLERS ///////////////////////////// 
+//
 
 // zooms the view in on a specific lat / long
-function zoom_on_location() {}
+function zoom_on_location(loc) {
+    // center the view over our location
+    map.setCenter(loc);
 
+    // zoom in
+    map.setZoom(ZOOM_IN_LVL);
+};
 
-// requests data for the transporter store and
-// throw down markers for all transporters
-function show_transporters() {}
-
-// remove the transporter markers and clear the store
-function clear_transporters() {}
-
-// brings up the transports summary info in a marker bubble
-function show_transporters_bubble() {}
-
-// associates a transporter to a delivery
-function assign_transporter() {}
+// these are shared functions for adata types that have markers
+// and event handlers
 
