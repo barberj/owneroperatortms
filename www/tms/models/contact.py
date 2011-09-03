@@ -105,8 +105,7 @@ class EmailAddress(HookedModel):
         """
         
         if self.before_put():
-            print 'execute db.put'
-            super(EmailAddress,self).put(**kwargs)
+            return super(EmailAddress,self).put(**kwargs)
         else:
             raise InvalidEmailAddress() 
 
