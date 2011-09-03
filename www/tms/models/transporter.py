@@ -10,10 +10,11 @@ import logging
 from google.appengine.ext import db
 
 from trackable import Trackable
+from contact import Contact
 
 class Transporter(Trackable):
     """
     Transporter model.
     """
 
-    user = db.UserProperty()
+    contact = db.ReferenceProperty(Contact, required=True)
