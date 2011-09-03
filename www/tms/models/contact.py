@@ -27,6 +27,16 @@ class PropertyType(db.Model):
         """
         return self.ptype
 
+class Address(db.Model):
+    """
+    Address model.
+    """
+
+    address_type = db.ReferenceProperty(PropertyType)
+    address = db.PostalAddressProperty()
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
+
 class Contact(db.Model):
     """
     Contact model.
@@ -34,6 +44,7 @@ class Contact(db.Model):
 
     first_name = db.StringProperty()
     last_name = db.StringProperty()
+    addresses = db.ListProperty(Address)
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
 
@@ -60,17 +71,6 @@ class Contact(db.Model):
 
         # finally delete self 
         db.delete(self)
-
-class Address(db.Model):
-    """
-    Address model.
-    """
-
-    address_type = db.ReferenceProperty(PropertyType)
-    address = db.PostalAddressProperty()
-    contact = db.ReferenceProperty(Contact,collection_name='addresses')
-    created_at = db.DateTimeProperty(auto_now_add=True)
-    updated_at = db.DateTimeProperty(auto_now=True)
 
 class InvalidEmailAddress(Exception):
     
