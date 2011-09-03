@@ -26,8 +26,8 @@ class Trackable(geo.geomodel.GeoModel):
         Return string representation for Payload object
         """
         return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(),
-                                                     self.latitude,
-                                                     self.longitude )
+                                                     self.location.lat,
+                                                     self.location.lon )
 
     def set_location(self,lat,lng):
         """
