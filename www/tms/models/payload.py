@@ -9,7 +9,7 @@ import logging
 from google.appengine.ext import db
 
 from trackable import Trackable
-from operator import Operator
+from broker import Broker
 from transporter import Transporter
 
 class PlannedPayload(Trackable):
@@ -24,7 +24,7 @@ class PlannedPayload(Trackable):
     pickup_address = db.StringProperty()
     delivery_address = db.StringProperty()
 
-    operator = db.ReferenceProperty(Operator,
+    broker = db.ReferenceProperty(Broker,
                                     collection_name='planned_payloads')
 
     def __str__(self):
@@ -42,13 +42,13 @@ class Payload(Trackable):
 
     pickedup_at = db.DateTimeProperty()
     delivered_at = db.DateTimeProperty()
+
     # need references to the owner and operator
     # and users who manipulate
-
     transporter = db.ReferenceProperty(Transporter,
                                        collection_name='payloads')
 
-    operator = db.ReferenceProperty(Operator,
+    broker = db.ReferenceProperty(Broker,
                                     collection_name='payloads')
 
     def __str__(self):
