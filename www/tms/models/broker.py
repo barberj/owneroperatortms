@@ -7,6 +7,7 @@ Broker model
 """
 
 from google.appengine.ext import db
+from contact import Contact
 
 class Broker(db.Model):
     """
@@ -16,4 +17,6 @@ class Broker(db.Model):
     Associated to many users who are able to admin over the deliveries
     """
 
+    contact = db.ReferenceProperty(Contact, required=True)
     created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
