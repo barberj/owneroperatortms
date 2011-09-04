@@ -13,10 +13,6 @@ handlers:
 - url: /extjs
   static_dir: tms/public/js/ext-4.0.2a
 
-- url: /payload.*
-  static_files: payload.html
-  upload: payload.html
-
 - url: /sencha
   static_files: sencha.html
   upload: sencha.html
