@@ -51,6 +51,30 @@ Ext.define('Ext.BaseHandler', {
             scope:this,
             params: loc.toQueryString()
         });
+    },
+
+    destroy: function(config) {
+        // before we let them destroy, confirm
+        if(!config.confirmed) {
+            var r = this;
+            Ext.window.MessageBox.confirm(
+                'Confirm Delete',
+                'Are you sure you would like to perminantely delete '+
+                'his record?',
+                function(answer) {
+                    // TODO figure out what a yes returns
+                    if(answer == 'true') {
+                        // recall destroy w/ a true for confirmed
+                        r.destroy(config.merge({confirmed:true}));
+                    }
+                }, this
+            );
+        }
+
+        // if we've confirmed than we'll delete
+        else {
+            this.callSuper(config);
+        }
     }
 });
 

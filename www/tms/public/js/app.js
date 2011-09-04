@@ -75,7 +75,7 @@ Ext.onReady({
     this.payload_handler.show_markers();
 
     // create our delivery list handler
-    this.delivery_list = Ext.DeliveryList();
+    this.delivery_list = new Ext.DeliveryListWindow();
 
     // setup the button
     Ext.get('toolbar').add(Ext.Button({
