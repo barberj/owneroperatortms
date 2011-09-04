@@ -53,7 +53,7 @@ class Payload(Trackable):
                                        collection_name='payloads')
 
     def __str__(self):
-        return 'Payload%s' % super(PlannedPayload,self).__str__()
+        return 'Payload%s' % super(Payload,self).__str__()
 
     def get_nearby_transporters(self,max_distance=16093):
         """
