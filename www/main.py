@@ -28,7 +28,9 @@ import tms.models as m
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        pass
+        self.response.out.write(
+            template.render('index.html',{})
+        )
 
 
     def post(self):
