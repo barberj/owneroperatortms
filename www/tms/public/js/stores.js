@@ -51,7 +51,7 @@ Ext.define('Ext.BaseHandler', {
         this.load({
             callback:callback,
             scope:this,
-            params: loc.toQueryString()
+            params: loc.toString()
         });
     },
 

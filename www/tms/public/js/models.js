@@ -63,6 +63,10 @@ Ext.define('Ext.BaseModel', {
 
 Ext.define('Ext.Transporter', {
     extends: 'Ext.BaseModel',
+    fields: [
+        { name:'available', type:'boolean' },
+        { name:'name', type:'string' }
+    ],
     hasMany: [ {model:'Ext.Payload', name:'payloads'},
                {model:'Ext.PlannedPayload', name:'planned_payload'} ]
 });
@@ -70,6 +74,12 @@ Ext.define('Ext.Transporter', {
 Ext.define('Ext.Payload', {
     extends: 'Ext.BaseModel',
     belongsTo: 'Ext.Transporter'
+    fields: [
+        'pickup_address',
+        'delivery_address',
+        { name:'pickedup_at', type:'date' }
+        { name:'delivered_at', type:'date' }
+    ],
 
     // when our marker is clicked we zoom in on
     // it and than show the transporters
@@ -83,6 +93,6 @@ Ext.define('Ext.Payload', {
 
 Ext.define('Ext.PlannedPayload', {
     extends: 'Ext.Payload',
-    belongsTo: 'Ext.Transporter'
+    belongsTo: [{name:'transporter', model:'Ext.Transporter'}]
 });
 
