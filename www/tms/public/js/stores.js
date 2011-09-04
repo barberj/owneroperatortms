@@ -5,9 +5,9 @@ var proxy_config = {
         type: 'json',
         root: 'data'
     }
-};
+}
 
-Ext.define('Ext.BaseStore',
+Ext.define('Ext.BaseStore', {
     override: 'Ext.data.Store',
     model: 'Ext.BaseModel',
     proxy: proxy_config,
@@ -44,7 +44,7 @@ Ext.define('Ext.BaseHandler', {
         });
         // clear our the stores data
         store.removeAll();
-    }
+    },
 
     refresh_data: function(loc, callback) {
         // reload the stores data
