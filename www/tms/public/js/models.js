@@ -3,10 +3,14 @@
 //  deliveries
 // they will only hold summary / high lvl data
 //   specific data will be pulled w/ ajax requests
-Ext.define('BaseModel', {
+Ext.define('Ext.BaseModel', {
     extends: 'Ext.data.Model',
     idProperty: 'id',
-    fields: [ {name:'id',type:'int'} ],
+    fields: [
+        { name:'id', type:'int' },
+        { name:'lat', type:'float' },
+        { name:'lng', type:'float' },
+    ],
 
     update: function(data) {
         // simple method to update the record
@@ -16,13 +20,13 @@ Ext.define('BaseModel', {
     },
     get_pos: function() {
         return new google.maps.LatLng(this.get('lat'),
-                                      this.get('long')),
+                                      this.get('long'))
     },
     add_marker: function() {
         // add a marker for each record at it's pos
         var marker = new google.maps.Marker({
             position: this.get_pos,
-            map: map
+            map: Ext.app.map
         });
 
         // create a callback which wraps the scope
@@ -49,7 +53,7 @@ Ext.define('BaseModel', {
             content: content
         });
         // throw the infoWindow up
-        infoWindow.open(map,this.marker);
+        infoWindow.open(Ext.app.map,this.marker);
     },
     get_bubble_content: function() {
         return ['CONTENT'];
@@ -61,22 +65,69 @@ Ext.define('BaseModel', {
 
 });
 
-Ext.define('Transporter', {
-    extends: 'BaseModel',
+Ext.define('Ext.Transporter', {
+    extends: 'Ext.BaseModel',
+    fields: Ext.BaseModel.fields.extend([
+        { name:'available', type:'boolean' },
+        { name:'name', type:'string' }
+    ]),
+    hasMany: [ {model:'Ext.Payload', name:'payloads'},
+               {model:'Ext.PlannedPayload', name:'planned_payload'} ],
+
+    form_items: []
 });
 
-Ext.define('Payload', {
-    extends: 'BaseModel',
+Ext.define('Ext.Payload', {
+    extends: 'Ext.BaseModel',
+    belongsTo: 'Ext.Transporter',
+    fields: Ext.BaseModel.fields.extend([
+        'pickup_address',
+        'delivery_address',
+        { name:'pickedup_at', type:'date' },
+        { name:'delivered_at', type:'date' }
+    ]),
 
     // when our marker is clicked we zoom in on
     // it and than show the transporters
-    handle_marker_click: function(loc) {
+    handle_marker_click: function() {
+        // zoom in on us
+        var loc = this.get_pos();
         zoom_on_location(loc);
-        transporter_handler.show_markers(loc);
-    }
+        // show all the Transporters in the area
+        Ext.app.transporter_handler.show_markers(loc);
+    },
+
+    // the form items for this model
+    form_items: [
+        {   xtype: 'textbox',
+            label: 'Pickup Address',
+            name: 'pickup_address'
+        },
+        {   xtype: 'textbox',
+            label: 'Delivery Address',
+            name: 'delivery_address'
+        }
+    ]
 });
 
-Ext.define('PlannedPayload', {
-    extends: 'Payload'
+Ext.define('Ext.PlannedPayload', {
+    extends: 'Ext.Payload',
+    belongsTo: [{name:'transporter', model:'Ext.Transporter'}],
+    fields: Ext.BaseModel.fields.extend([
+        'pickup_address',
+        'delivery_address'
+    ]),
+
+    // the form items for this model
+    form_items: [
+        {   xtype: 'textbox',
+            label: 'Pickup Address',
+            name: 'pickup_address'
+        },
+        {   xtype: 'textbox',
+            label: 'Delivery Address',
+            name: 'delivery_address'
+        }
+    ]
 });
 

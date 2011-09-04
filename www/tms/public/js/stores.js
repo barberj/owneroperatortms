@@ -1,19 +1,21 @@
 var proxy_config = {
-    type: 'ajax',
+    type: 'rest',
     url: '',
     reader: {
         type: 'json',
         root: 'data'
     }
 };
-var BaseStore = new Ext.data.Store({
-    model: 'BaseModel',
+
+Ext.define('Ext.BaseStore',
+    override: 'Ext.data.Store',
+    model: 'Ext.BaseModel',
     proxy: proxy_config,
     autoLoad: false
 });
 
-Ext.define('BaseHandler', {
-    override: 'BaseStore',
+Ext.define('Ext.BaseHandler', {
+    override: 'Ext.BaseStore',
 
     // refresh data and put up markers
     show_markers: function(loc) {
@@ -49,33 +51,57 @@ Ext.define('BaseHandler', {
         this.load({
             callback:callback,
             scope:this,
-            // TODO: specify loc params
+            params: loc.toString()
         });
+    },
+
+    destroy: function(config) {
+        // before we let them destroy, confirm
+        if(!config.confirmed) {
+            var r = this;
+            Ext.window.MessageBox.confirm(
+                'Confirm Delete',
+                'Are you sure you would like to perminantely delete '+
+                'his record?',
+                function(answer) {
+                    // TODO figure out what a yes returns
+                    if(answer == 'true') {
+                        // recall destroy w/ a true for confirmed
+                        r.destroy(config.merge({confirmed:true}));
+                    }
+                }, this
+            );
+        }
+
+        // if we've confirmed than we'll delete
+        else {
+            this.callSuper(config);
+        }
     }
 });
 
 
 // DEFINE and INSTANTIATE our HANDLERS
-Ext.define('TransporterHandler', {
-    override:'BaseHandler'
-});
-
-transport_handler = new TransporterHandler();
-
-Ext.define('PayloadHandler', {
-    override:'BaseHandler',
+Ext.define('Ext.TransporterHandler', {
+    override:'Ext.BaseHandler',
     proxy: proxy_config.merge({
-        url:'./payloads/list',
+        url:'./transporters',
     })
 });
 
-payload_handler = new PayloadHandler();
 
-Ext.define('PlannedPayloadHandler', {
-    override:'BaseHandler',
+Ext.define('Ext.PayloadHandler', {
+    override:'Ext.BaseHandler',
     proxy: proxy_config.merge({
-
+        url:'./payloads',
     })
 });
 
-planned_payload_handler = new PlannedPayloadHandler();
+
+Ext.define('Ext.PlannedPayloadHandler', {
+    override:'Ext.BaseHandler',
+    proxy: proxy_config.merge({
+        url:'./plannedpayloads',
+    })
+});
+
