@@ -15,6 +15,9 @@
 # limitations under the License.
 #
 import logging
+logging.root.level=logging.DEBUG
+
+
 import urllib
 import simplejson as json
 
@@ -25,11 +28,8 @@ import tms.models as m
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        payload_q = db.GqlQuery('SELECT * FROM Payload')
-        payloads = [payload for payload in payload_q]
-        self.response.out.write(
-            template.render('index.html',{'payloads': payloads})
-        )
+        pass
+
 
     def post(self):
         logging.info('Post')
@@ -39,61 +39,74 @@ class MainHandler(webapp.RequestHandler):
         logging.info('Posted')
         self.redirect('/add_payload')
 
-
-class ShowPayloads(webapp.RequestHandler):
+class Test(webapp.RequestHandler):
     def get(self):
-        payload_q = db.GqlQuery('SELECT * FROM Payload')
-        for payload in payload_q:
-            self.response.out.write("%s<br />" % payload)
-            self.response.out.write("Created: %s<br />" % payload.created_at)
-            self.response.out.write("Updated: %s<br />" % payload.updated_at)
-            self.response.out.write("Addr: %s<br />" % payload.pickup_address)
-            logging.info(payload)
+        robby = m.Contact(first_name='Robby',last_name='Ranshous').put()
+        email = m.EmailAddress(email_type=m.PropertyType.get_by_id(285),contact=m.Contact.get(robby),emailaddress='rranshous@ootms.com').put()
+        phone = m.PhoneNumber(phone_type=m.PropertyType.get_by_id(285),contact=m.Contact.get(robby),phone_number='3216263441').put()
+        m.User(username=m.EmailAddress.get(email),password='password').put()
+        trans = m.Transporter(contact=m.Contact.get(robby),location=db.GeoPt(33.748067,-84.378832))
+        trans.update_location()
+        trans.put()
 
-class GetPayload(webapp.RequestHandler):
+
+        justin = m.Contact(first_name='Justin',last_name='Barber').put()
+        email = m.EmailAddress(email_type=m.PropertyType.get_by_id(285),contact=m.Contact.get(justin),emailaddress='jbarber@ootms.com').put()
+        phone = m.PhoneNumber(phone_type=m.PropertyType.get_by_id(285),contact=m.Contact.get(justin),phone_number='4048636685').put()
+        m.User(username=m.EmailAddress.get(email),password='password').put()
+        broker=m.Broker(contact=m.Contact.get(justin)).put()
+
+        pay = m.Payload(location=db.GeoPt(33.74743,-84.377124),broker=m.Broker.get(broker))
+        #withou udpate location proximity fetchs don't work
+        pay.update_location()
+        pay.put()
+
+    def delete(self):
+        """
+        Delete/Clean Test data
+        """
+        for contact in m.Contact.all():
+         contact.delete()
+        for broker in m.Broker.all():
+         broker.delete()
+        for trans in m.Transporter.all():
+         trans.delete()
+        for payload in m.Payload.all():
+         payload.delete()
+
+
+class Payload(webapp.RequestHandler):
+    def delete(self):
+        """
+        Delete payload(s)
+        """
+        pass
+
+    def get(self,id):
+        """
+        Retrieve payload
+        """
+        payload = m.Payload.get_by_id(int(id))
+        logging.debug(payload)
+        self.response.out.write(payload)
+
     def post(self):
-        payload = m.Payload.get_by_id(int(self.request.get('id')))
-        self.response.out.write("%s<br />" % payload)
-        logging.info(payload)
+        """
+        Create payload(s)
+        """
+        pass
 
-class UpdatePayload(webapp.RequestHandler):
-    def post(self):
-        payload = m.Payload.get_by_id(int(self.request.get('id')))
-        payload.pickup_address = self.request.get('addr')
-        payload.put()
-        self.response.out.write("%s<br />%s %s" % (payload))
-        logging.info(payload)
+    def put(self):
+        """
+        Update payload(s)
+        """
+        pass
 
-class addAddrPayload(webapp.RequestHandler):
-    def post(self):
-        payload = m.Payload(pickup_address=self.request.get('addr'))
-
-        # geocode
-        # http://code.google.com/apis/maps/documentation/geocoding/index.html
-        # http://developer.yahoo.com/python/python-rest.html
-        # url='http://maps.googleapis.com/maps/api/geocode/json'
-        # params = urllib.urlencode ((
-        #     ('address', payload.pickup_address),
-        #    ('sensor','true')
-        #))
-        #print params
-        url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=true' % urllib.quote(payload.pickup_address)
-        #print url
-        jsondata = urllib.urlopen(url).read()
-        decoded = json.loads(jsondata)
-        payload.latitude = decoded['results'][0]['geometry']['location']['lat']
-        payload.longitude = decoded['results'][0]['geometry']['location']['lng']
-        payload.put()
-
-        self.redirect('/')
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/add_payload', MainHandler),
-                                          ('/add_payload_addr', addAddrPayload),
-                                          ('/get_payload', GetPayload),
-                                          ('/update_payload', UpdatePayload),
-                                          ('/show', ShowPayloads)],
+                                          ('/payload/(.*)', Payload),
+                                          ('/test', Test)],
                                          debug=True)
     util.run_wsgi_app(application)
 
