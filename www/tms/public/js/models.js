@@ -20,7 +20,7 @@ Ext.define('Ext.BaseModel', {
     },
     get_pos: function() {
         return new google.maps.LatLng(this.get('lat'),
-                                      this.get('long')),
+                                      this.get('long'))
     },
     add_marker: function() {
         // add a marker for each record at it's pos
@@ -79,11 +79,11 @@ Ext.define('Ext.Transporter', {
 
 Ext.define('Ext.Payload', {
     extends: 'Ext.BaseModel',
-    belongsTo: 'Ext.Transporter'
+    belongsTo: 'Ext.Transporter',
     fields: Ext.BaseModel.fields.extend([
         'pickup_address',
         'delivery_address',
-        { name:'pickedup_at', type:'date' }
+        { name:'pickedup_at', type:'date' },
         { name:'delivered_at', type:'date' }
     ]),
 
@@ -105,14 +105,14 @@ Ext.define('Ext.Payload', {
         },
         {   xtype: 'textbox',
             label: 'Delivery Address',
-            name: 'delivery_address
+            name: 'delivery_address'
         }
     ]
 });
 
 Ext.define('Ext.PlannedPayload', {
     extends: 'Ext.Payload',
-    belongsTo: [{name:'transporter', model:'Ext.Transporter'}]
+    belongsTo: [{name:'transporter', model:'Ext.Transporter'}],
     fields: Ext.BaseModel.fields.extend([
         'pickup_address',
         'delivery_address'
@@ -126,7 +126,7 @@ Ext.define('Ext.PlannedPayload', {
         },
         {   xtype: 'textbox',
             label: 'Delivery Address',
-            name: 'delivery_address
+            name: 'delivery_address'
         }
     ]
 });

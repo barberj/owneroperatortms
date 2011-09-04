@@ -75,13 +75,13 @@ Ext.onReady({
     this.payload_handler.show_markers();
 
     // create our delivery list handler
-    this.delivery_list = new Ext.DeliveryListWindow();
+    this.payload_list_window = new Ext.PayloadListWindow();
 
     // setup the button
     Ext.get('toolbar').add(Ext.Button({
         text: 'Delivery List',
-        handler: this.delivery_list.toggle
-        scope: this.delivery_list
+        handler: this.payload_list_window.toggle
+        scope: this.payload_list
     });
 
 });

@@ -76,16 +76,18 @@ Ext.define('Ext.PayloadListPanel',{
 });
 
 
-Ext.define('Ext.DeliveryListWindow',{
+Ext.define('Ext.PayloadListWindow',{
 
     // we are a window
     extends: 'Ext.window.Window',
 
-    title: 'Deliveries',
+    title: 'Payloads',
 
     // shows / hides the deliveiry window
     toggle: function() {
         // hide ? show ? we'll see
+        // TODO figure out when to show
+        this.show();
         this.setVisible(!this.isVisible());
     },
 
