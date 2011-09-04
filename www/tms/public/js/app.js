@@ -53,10 +53,10 @@ function zoom_on_location(loc) {
 // these are shared functions for adata types that have markers
 // and event handlers
 
-Ext.onReady({
+Ext.onReady( function(){
 
     // set our context
-    this = Ext.app = {};
+    this.Ext.app = {};
 
     // create our map
     Ext.app.map = new google.maps.Map(document.getElementById('map'), {
@@ -80,8 +80,8 @@ Ext.onReady({
     // setup the button
     Ext.get('toolbar').add(Ext.Button({
         text: 'Delivery List',
-        handler: this.payload_list_window.toggle
+        handler: this.payload_list_window.toggle,
         scope: this.payload_list
-    });
+    }));
 
 });
