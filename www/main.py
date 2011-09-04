@@ -111,9 +111,23 @@ class Payload(webapp.RequestHandler):
         """
         pass
 
+class Payloads(webapp.RequestHandler):
+    def get(self):
+        """
+        Retrieve all undelievered payloads owned by a broker
+        """
+        broker = m.Broker.get_by_id(572)
+        payloads = m.Payload.all().filter('broker =', broker).\
+                     filter('delivered_at =', None)
+
+        for payload in payloads:
+            logging.debug('[Payloads] %s', payload)
+
+        return json.dumps(payloads)
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
+                                          ('/payloads', Payloads),
                                           ('/payload/(.*)', Payload),
                                           ('/test', Test)],
                                          debug=True)
