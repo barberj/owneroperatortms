@@ -120,10 +120,9 @@ class Payloads(webapp.RequestHandler):
         payloads = m.Payload.all().filter('broker =', broker).\
                      filter('delivered_at =', None)
 
-        for payload in payloads:
-            logging.debug('[Payloads] %s', payload)
+        retVal = [payload for payload in payloads]
 
-        return json.dumps(payloads)
+        return json.dumps(retVal)
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
