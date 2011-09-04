@@ -1,12 +1,14 @@
 var proxy_config = {
-    type: 'ajax',
+    type: 'rest',
     url: '',
     reader: {
         type: 'json',
         root: 'data'
     }
 };
-var BaseStore = new Ext.data.Store({
+
+Ext.define('Ext.BaseStore',
+    override: 'Ext.data.Store',
     model: 'Ext.BaseModel',
     proxy: proxy_config,
     autoLoad: false
@@ -83,7 +85,7 @@ Ext.define('Ext.BaseHandler', {
 Ext.define('Ext.TransporterHandler', {
     override:'Ext.BaseHandler',
     proxy: proxy_config.merge({
-        url:'./transporters/list',
+        url:'./transporters',
     })
 });
 
@@ -91,7 +93,7 @@ Ext.define('Ext.TransporterHandler', {
 Ext.define('Ext.PayloadHandler', {
     override:'Ext.BaseHandler',
     proxy: proxy_config.merge({
-        url:'./payloads/list',
+        url:'./payloads',
     })
 });
 
@@ -99,7 +101,7 @@ Ext.define('Ext.PayloadHandler', {
 Ext.define('Ext.PlannedPayloadHandler', {
     override:'Ext.BaseHandler',
     proxy: proxy_config.merge({
-        url:'./plannedpayloads/list',
+        url:'./plannedpayloads',
     })
 });
 
