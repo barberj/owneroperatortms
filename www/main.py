@@ -76,25 +76,34 @@ class Test(webapp.RequestHandler):
 
 
 class Payload(webapp.RequestHandler):
-    def delete(self):
+    def delete(self, id):
         """
         Delete payload(s)
         """
-        pass
+        payload = m.Payload.get_by_id(int(id))
+        logging.info('[Payload] Deleteing %s', payload)
 
     def get(self,id):
         """
         Retrieve payload
         """
-        payload = m.Payload.get_by_id(int(id))
-        logging.debug(payload)
-        self.response.out.write(payload)
+        method = self.request.method
+        if method and method == 'DELETE':
+            self.delete(id)
+        else:
+            payload = m.Payload.get_by_id(int(id))
+            logging.info('[Payload] Retrieving %s', payload)
+            self.response.out.write(payload)
 
     def post(self):
         """
         Create payload(s)
         """
-        pass
+        method = self.request.method
+        if method and method == 'PUT':
+            pass
+        else:
+            pass
 
     def put(self):
         """
