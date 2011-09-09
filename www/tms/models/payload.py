@@ -52,6 +52,8 @@ class PlannedPayload(db.Model):
     Used to coordinate and see if any drivers are currently avaialable.
     If confirmed would create a Payload.
     """
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
     pickup_address = db.ReferenceProperty(Address, collection_name='plannedpayload_pickups')
     delivery_address = db.ReferenceProperty(Address, collection_name='plannedpayload_deliverys')
@@ -68,6 +70,8 @@ class Payload(db.Model):
 
     A confirmed payload requiring a pickup and delivery on a schedule.
     """
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
 
     pickup_address = db.ReferenceProperty(Address, collection_name='pickedup_payloads')
     delivery_address = db.ReferenceProperty(Address, collection_name='delivered_payloads')
