@@ -1,19 +1,50 @@
 # payload.py
-"""
-Payload model
-- the load carried by a vehicle exclusive of what is necessary for its operation
-"""
 
 import logging
 
 from google.appengine.ext import db
 
-from trackable import Trackable
+"""
+Trackable model
+- capable of being traced or tracked
+"""
+import geo.geomodel
+class Trackable(geo.geomodel.GeoModel):
+    """
+    Trackable model.
+    """
+
+    # the location property is related to
+    # the db.GeoPt class
+
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
+
+    def __str__(self):
+        """
+        Return string representation for Trackable object
+        """
+        return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(),
+                                                     self.location.lat,
+                                                     self.location.lon )
+
+    def set_location(self,lat,lng):
+        """
+        updates the GeoPt location of the trackable
+        does not do .put()
+        """
+
+        self.location = db.GeoPt(lat,lng)
+        self.update_location()
+
+"""
+Payload model
+- the load carried by a vehicle exclusive of what is necessary for its operation
+"""
 from broker import Broker
 from transporter import Transporter
 from contact import Address
-
-class PlannedPayload(Trackable):
+class PlannedPayload(db.Model):
     """
     PlannedPayload model.
 
@@ -31,7 +62,7 @@ class PlannedPayload(Trackable):
     def __str__(self):
         return 'Planned Payload%s' % super(PlannedPayload,self).__str__()
 
-class Payload(Trackable):
+class Payload(db.Model):
     """
     Payload model.
 
@@ -43,6 +74,8 @@ class Payload(Trackable):
 
     pickedup_at = db.DateTimeProperty()
     delivered_at = db.DateTimeProperty()
+
+    #current_location = TrackableProperty()
 
     # need references to the broker and transporter
     # and users who manipulate
@@ -64,3 +97,6 @@ class Payload(Trackable):
             self.location,
             max_results=10,
             max_distance=max_distance) #within 10 miles
+
+class PayloadCoordinates(Trackable):
+    coordinates = db.ReferenceProperty(Payload)
