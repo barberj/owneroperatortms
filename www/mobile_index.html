@@ -2,21 +2,24 @@
     <head>
         <script src="/js/geo.js"></script>
         <script>
-            if(geo_position_js.init()) {
-                geo_position_js.getCurrentPosition(
-                    function(data) {
-                        console.log({pos_data:data});
-                        var lat = data.coords.latitude;
-                        var lng = data.coords.lng;
-                        var timestamp = data.timestamp;
-                    },
-                    function(data) {
-                        console.log({err_data:data});
-                    }
-                );
-            } else {
-                alert("No Geo");
-            };
+            var make_request = function() {
+                if(geo_position_js.init()) {
+                    geo_position_js.getCurrentPosition(
+                        function(data) {
+                            console.log({pos_data:data});
+                            var lat = data.coords.latitude;
+                            var lng = data.coords.lng;
+                            var timestamp = data.timestamp;
+                        },
+                        function(data) {
+                            console.log({err_data:data});
+                        }
+                    );
+                } else {
+                    alert("No Geo");
+                };
+            }
+            make_request();
         </script>
     </head>
 

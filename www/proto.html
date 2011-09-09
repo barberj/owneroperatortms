@@ -1,17 +1,39 @@
 <html>
     <head>
         <title>Owner Operator TMS</title>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
 
-    <script>
+    <script language="javascript">
+    function alertPosition(position){
+        console.log("Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
+    }
+
     function getGeoLocal(){
-    if (navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(initialize_map);
-    } else {
-        alert("Browser doesn\'t support geolocation");
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(post_coords);
+        } else {
+            alert("Browser doesn\'t support geolocation");
+        }
+    };
+
+    function post_coords(position){
+        Ext.Ajax.request({
+            url: 'payload',
+            timeout: 3000,
+            method: 'POST',
+            success: alertPosition(position) 
+        });
+        setTimeout("getGeoLocal()",3000);
     }
     </script>
 
     </head>
     <body>
+    <script language="javascript">
+        //while (true){
+            setTimeout("getGeoLocal()",3000);
+        //}
+    </script>
+    
     </body>
 </html>

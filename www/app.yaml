@@ -20,6 +20,10 @@ handlers:
 - url: /streaming
   script: main_streaming.py
 
+- url: /proto
+  static_files: proto.html
+  upload: proto.html
+
 - url: .*
   script: main.py
 
