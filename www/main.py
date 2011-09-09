@@ -121,11 +121,19 @@ class Payloads(webapp.RequestHandler):
 
         return json.dumps(retVal)
 
+class Client(webapp.RequestHandler):
+    def get(self):
+        self.response.out.write(
+            template.render('mobile_index.html',{})
+        )
+        return
+
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/payloads', Payloads),
                                           ('/payload/(.*)', Payload),
-                                          ('/test', Test)],
+                                          ('/test', Test),
+                                          ('/client', Client)],
                                          debug=True)
     util.run_wsgi_app(application)
 
