@@ -131,7 +131,8 @@ class Client(webapp.RequestHandler):
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/payload/(.*)', Payload),
+                                          ('/payload', Payload),
+                                         # ('/payload/(.*)', Payload),
                                           ('/test', Test),
                                           ('/client', Client)],
                                          debug=True)
