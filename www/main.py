@@ -100,6 +100,7 @@ class Payload(webapp.RequestHandler):
         if method and method == 'PUT':
             pass
         else:
+            logging.info('POST')
             pass
 
     def put(self):
@@ -124,7 +125,8 @@ class Payloads(webapp.RequestHandler):
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/payloads', Payloads),
-                                          ('/payload/(.*)', Payload),
+                                          ('/payload', Payload),
+                                      #    ('/payload/(.*)', Payload),
                                           ('/test', Test)],
                                          debug=True)
     util.run_wsgi_app(application)
