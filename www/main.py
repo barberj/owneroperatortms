@@ -47,9 +47,7 @@ class Test(webapp.RequestHandler):
         email = m.EmailAddress(email_type=m.PropertyType.get_by_id(285),contact=m.Contact.get(robby),emailaddress='rranshous@ootms.com').put()
         phone = m.PhoneNumber(phone_type=m.PropertyType.get_by_id(285),contact=m.Contact.get(robby),phone_number='3216263441').put()
         m.User(username=m.EmailAddress.get(email),password='password').put()
-        trans = m.Transporter(contact=m.Contact.get(robby),location=db.GeoPt(33.748067,-84.378832))
-        trans.update_location()
-        trans.put()
+        trans = m.Transporter(contact=m.Contact.get(robby)).put()
 
 
         justin = m.Contact(first_name='Justin',last_name='Barber').put()
@@ -58,10 +56,7 @@ class Test(webapp.RequestHandler):
         m.User(username=m.EmailAddress.get(email),password='password').put()
         broker=m.Broker(contact=m.Contact.get(justin)).put()
 
-        pay = m.Payload(location=db.GeoPt(33.74743,-84.377124),broker=m.Broker.get(broker))
-        #withou udpate location proximity fetchs don't work
-        pay.update_location()
-        pay.put()
+        pay = m.Payload(broker=m.Broker.get(broker)).put()
 
     def delete(self):
         """
