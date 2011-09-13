@@ -19,6 +19,8 @@
     function post_coords(position){
         Ext.Ajax.request({
             url: 'payload',
+            params: { latitude : position.coords.latitude, 
+                      longitude : position.coords.longitude },
             timeout: 3000,
             method: 'POST',
             success: alertPosition(position) 

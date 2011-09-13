@@ -100,6 +100,8 @@ class Payload(webapp.RequestHandler):
         if method and method == 'PUT':
             pass
         else:
+            logging.info('Lat: %s' % self.request.get('latitude'))
+            logging.info('Long: %s' % self.request.get('longitude'))
             logging.info('POST')
             pass
 
