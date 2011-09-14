@@ -32,7 +32,6 @@ class MainHandler(webapp.RequestHandler):
             template.render('index.html',{})
         )
 
-
     def post(self):
         logging.info('Post')
         load = m.Payload(longitude=float(self.request.get('long')),

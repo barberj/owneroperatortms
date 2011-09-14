@@ -30,7 +30,7 @@ class testModels(unittest.TestCase):
 
     def test_1(self):
         """
-        Test Email
+        Test Email Model
         """
 
         # Test validator
@@ -42,6 +42,18 @@ class testModels(unittest.TestCase):
         self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk@..com').put)
         self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='junk@junk').put)
         #self.assertRaises(m.InvalidEmailAddress,m.EmailAddress(emailaddress='.@junk.com').put)
+
+        # Create a good Email
+        email = m.EmailAddress(emailaddress='test@ootms.com').put()
+        print email
+        if sys.version_info >= (2,7):
+            self.assertIsNotNone(email)
+        self.assertEquals('test@ootms.com', m.EmailAddress.get(email).emailaddress)
     
+    
+    def test_2(self):
+        """
+        Test Contact Model
+        """
         justin = m.Contact(first_name='Justin',last_name='Barber').put()
         self.assertEquals('Justin', m.Contact.get(justin).first_name)
