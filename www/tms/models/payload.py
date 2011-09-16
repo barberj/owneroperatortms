@@ -4,56 +4,9 @@ import logging
 
 from google.appengine.ext import db
 
-"""
-Trackable model
-- capable of being traced or tracked
-"""
-class Trackable(db.Model, db.GeoPt):
-    """
-    Trackable model.
-    """
-
-    # the coordinates property is related to
-    # the db.GeoPt class
-    created_at = db.DateTimeProperty(auto_now_add=True)
-    updated_at = db.DateTimeProperty(auto_now=True)
-
-    coordinates = db.GeoPtProperty()
-
-    def __str__(self):
-        """
-        Return string representation for Trackable object
-        """
-        return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(),
-                                                     self.coordinates.lat,
-                                                     self.coordinates.lon )
-
-"""
-Payload model
-- the load carried by a vehicle exclusive of what is necessary for its operation
-"""
+from contact import Address
 from broker import Broker
 from transporter import Transporter
-from contact import Address
-class PlannedPayload(db.Model):
-    """
-    PlannedPayload model.
-
-    A Payload without a schedule.
-    Used to coordinate and see if any drivers are currently avaialable.
-    If confirmed would create a Payload.
-    """
-    created_at = db.DateTimeProperty(auto_now_add=True)
-    updated_at = db.DateTimeProperty(auto_now=True)
-
-    pickup_address = db.ReferenceProperty(Address, collection_name='plannedpayload_pickups')
-    delivery_address = db.ReferenceProperty(Address, collection_name='plannedpayload_deliverys')
-
-    broker = db.ReferenceProperty(Broker,
-                                    collection_name='planned_payloads', required=True)
-
-    def __str__(self):
-        return 'Planned Payload%s' % super(PlannedPayload,self).__str__()
 
 class Payload(db.Model):
     """
@@ -70,21 +23,28 @@ class Payload(db.Model):
     pickedup_at = db.DateTimeProperty()
     delivered_at = db.DateTimeProperty()
 
-    current_location = db.GeoPtProperty()
-
-    coordinates = db.ListProperty(db.Key)
+    current_coordinates = db.GeoPtProperty()
+    coordinates = db.ListProperty(db.GeoPt,default=None)
 
     # need references to the broker and transporter
     # and users who manipulate
     broker = db.ReferenceProperty(Broker,
-                                    collection_name='payloads', required=True)
+                                    collection_name='payloads')#, required=True)
 
     transporter = db.ReferenceProperty(Transporter,
                                        collection_name='payloads')
 
-    def __str__(self):
-        return 'Payload%s' % super(Payload,self).__str__()
+    def __init__(self,*args,**kwargs):
+        key = super(Payload,self).__init__(*args,**kwargs)
+        self.coordinates.append(self.current_coordinates)
+        return key
 
+    def __str__(self):
+        if self.current_coordinates:
+            return 'Payload[%s] at Longitude %s, Latitude %s' % ( self.key().id(),
+                                                                  self.current_coordinates.lon,
+                                                                  self.current_coordinates.lat ) 
+        return 'Payload[%s] coordinates are unknown' % self.key().id()
 
     def set_location(self, latitude, longitude):
         """
