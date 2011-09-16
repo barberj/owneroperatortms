@@ -8,35 +8,26 @@ from google.appengine.ext import db
 Trackable model
 - capable of being traced or tracked
 """
-class Trackable(db.GeoPt):
+class Trackable(db.Model, db.GeoPt):
     """
     Trackable model.
     """
 
     # the location property is related to
     # the db.GeoPt class
-
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
 
-    def __init__(self, lat, lng, *args, **kwargs):
-        return super(Trackable, self).__init__(lat, lng)
+    def __init__(lat,lon):
+        super(Trackable,self).__init__(lat=lat,lon=lon)
 
     def __str__(self):
         """
         Return string representation for Trackable object
         """
         return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(),
-                                                     self.location.lat,
-                                                     self.location.lon )
-
-    def set_location(self,lat,lng):
-        """
-        updates the GeoPt location of the trackable
-        does not do .put()
-        """
-
-        self.location = db.GeoPt(lat,lng)
+                                                     self.lat,
+                                                     self.lon )
 
 """
 Payload model
@@ -101,7 +92,7 @@ class Payload(db.Model):
         Update Payload location.
         """
 
-        new_coordinate = Trackable(lat=latitude,lng=longitude)
+        new_coordinate = Trackable(lat=latitude,lon=longitude)
         self.coordinates.append(new_coordinate)
         self.current_location = new_coordinate
 
