@@ -8,8 +8,7 @@ from google.appengine.ext import db
 Trackable model
 - capable of being traced or tracked
 """
-import geo.geomodel
-class Trackable(geo.geomodel.GeoModel):
+class Trackable(db.GeoPt):
     """
     Trackable model.
     """
@@ -19,6 +18,9 @@ class Trackable(geo.geomodel.GeoModel):
 
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
+
+    def __init__(self, lat, lng, *args, **kwargs):
+        return super(Trackable, self).__init__(lat, lng)
 
     def __str__(self):
         """
@@ -35,7 +37,6 @@ class Trackable(geo.geomodel.GeoModel):
         """
 
         self.location = db.GeoPt(lat,lng)
-        self.update_location()
 
 """
 Payload model
@@ -79,7 +80,9 @@ class Payload(db.Model):
     pickedup_at = db.DateTimeProperty()
     delivered_at = db.DateTimeProperty()
 
-    #current_location = TrackableProperty()
+    current_location = db.GeoPtProperty()
+
+    coordinates = db.ListProperty(db.Key)
 
     # need references to the broker and transporter
     # and users who manipulate
@@ -92,15 +95,24 @@ class Payload(db.Model):
     def __str__(self):
         return 'Payload%s' % super(Payload,self).__str__()
 
+
+    def set_location(self, latitude, longitude):
+        """
+        Update Payload location.
+        """
+
+        new_coordinate = Trackable(lat=latitude,lng=longitude)
+        self.coordinates.append(new_coordinate)
+        self.current_location = new_coordinate
+
+        return self.current_location
+
     def get_nearby_transporters(self,max_distance=16093):
         """
         Return a list of the transporters available near payload.
         """
         base_query = Transporter.all().filter('available =',True)
         return Transporter.proximity_fetch(base_query,
-            self.location,
+            self.current_location,
             max_results=10,
             max_distance=max_distance) #within 10 miles
-
-class PayloadCoordinates(Trackable):
-    coordinates = db.ReferenceProperty(Payload)
