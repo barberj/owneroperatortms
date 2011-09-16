@@ -13,21 +13,20 @@ class Trackable(db.Model, db.GeoPt):
     Trackable model.
     """
 
-    # the location property is related to
+    # the coordinates property is related to
     # the db.GeoPt class
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
 
-    def __init__(lat,lon):
-        super(Trackable,self).__init__(lat=lat,lon=lon)
+    coordinates = db.GeoPtProperty()
 
     def __str__(self):
         """
         Return string representation for Trackable object
         """
         return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(),
-                                                     self.lat,
-                                                     self.lon )
+                                                     self.coordinates.lat,
+                                                     self.coordinates.lon )
 
 """
 Payload model
