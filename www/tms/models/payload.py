@@ -34,8 +34,10 @@ class Payload(db.Model):
     transporter = db.ReferenceProperty(Transporter,
                                        collection_name='payloads')
 
-    def __init__(self,*args,**kwargs):
+    def __init__(self,lat=None,lon=None,*args,**kwargs):
         key = super(Payload,self).__init__(*args,**kwargs)
+        if lat and lon:
+            self.current_coordinates=db.GeoPt(lat=lat,lon=lon)
         self.coordinates.append(self.current_coordinates)
         return key
 
@@ -46,16 +48,14 @@ class Payload(db.Model):
                                                                   self.current_coordinates.lat ) 
         return 'Payload[%s] coordinates are unknown' % self.key().id()
 
-    def set_location(self, latitude, longitude):
+    def update_location(self, lat, lon):
         """
         Update Payload location.
         """
 
-        new_coordinate = Trackable(lat=latitude,lon=longitude)
-        self.coordinates.append(new_coordinate)
-        self.current_location = new_coordinate
-
-        return self.current_location
+        self.current_coordinates = db.GeoPt(lat=lat,lon=lon)
+        self.coordinates.append(self.current_coordinates)
+        return self.current_coordinates
 
     def get_nearby_transporters(self,max_distance=16093):
         """
