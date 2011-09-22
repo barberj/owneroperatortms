@@ -8,6 +8,42 @@ from contact import Address
 from broker import Broker
 from transporter import Transporter
 
+"""
+Trackable model
+- capable of being traced or tracked
+"""
+class Trackable(db.Model):
+    """
+    Trackable model.
+    """
+
+    # the location property is related to
+    # the db.GeoPt class
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    updated_at = db.DateTimeProperty(auto_now=True)
+    coordinates = db.GeoPtProperty()
+
+    def __str__(self):
+        """
+        Return string representation for Trackable object
+        """
+        return '[%s] Latitude: %s, Longitude %s' % ( self.key().id(),
+                                                     self.coordinates.lat,
+                                                     self.coordinates.lon )
+
+    def __init__(self,lat=None,lon=None,*args,**kwargs):
+        key = super(Trackable,self).__init__(*args,**kwargs)
+        if lat and lon:
+            self.coordinates=db.GeoPt(lat=lat,lon=lon)
+        return key
+
+    def set_location(self,lat,lng):
+        """
+        updates the GeoPt location of the trackable
+        does not do .put()
+        """
+        self.location = db.GeoPt(lat,lng)
+
 class Payload(db.Model):
     """
     Payload model.
@@ -23,8 +59,8 @@ class Payload(db.Model):
     pickedup_at = db.DateTimeProperty()
     delivered_at = db.DateTimeProperty()
 
-    current_coordinates = db.GeoPtProperty()
-    coordinates = db.ListProperty(db.GeoPt,default=None)
+    current_coordinates = db.ReferenceProperty(Trackable)
+    coordinates = db.ListProperty(db.Key,default=None)
 
     # need references to the broker and transporter
     # and users who manipulate
@@ -37,15 +73,14 @@ class Payload(db.Model):
     def __init__(self,lat=None,lon=None,*args,**kwargs):
         key = super(Payload,self).__init__(*args,**kwargs)
         if lat and lon:
-            self.current_coordinates=db.GeoPt(lat=lat,lon=lon)
-        self.coordinates.append(self.current_coordinates)
+            self.update_location(lat,lon)
         return key
 
     def __str__(self):
         if self.current_coordinates:
             return 'Payload[%s] at Longitude %s, Latitude %s' % ( self.key().id(),
-                                                                  self.current_coordinates.lon,
-                                                                  self.current_coordinates.lat ) 
+                                                                  self.current_coordinates.coordinates.lon,
+                                                                  self.current_coordinates.coordinates.lat ) 
         return 'Payload[%s] coordinates are unknown' % self.key().id()
 
     def update_location(self, lat, lon):
@@ -53,8 +88,9 @@ class Payload(db.Model):
         Update Payload location.
         """
 
-        self.current_coordinates = db.GeoPt(lat=lat,lon=lon)
-        self.coordinates.append(self.current_coordinates)
+        trackable = Trackable(lat=lat,lon=lon).put()
+        self.current_coordinates=Trackable.get(trackable)
+        self.coordinates.append(trackable)
         return self.current_coordinates
 
     def get_nearby_transporters(self,max_distance=16093):
