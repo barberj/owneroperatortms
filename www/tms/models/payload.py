@@ -98,7 +98,7 @@ class Payload(db.Model):
         Don't orphan the coordinates!
         """
 
-        self.current_coordinates=None
+        #self.current_coordinates=None
         for coordinates in self.coordinates:
             Trackable.get(coordinates).delete()
         db.delete(self)
