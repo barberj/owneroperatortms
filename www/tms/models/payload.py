@@ -93,6 +93,16 @@ class Payload(db.Model):
         self.coordinates.append(trackable)
         return self.current_coordinates
 
+    def delete(self):
+        """
+        Don't orphan the coordinates!
+        """
+
+        self.current_coordinates=None
+        for coordinates in self.coordinates:
+            Trackable.get(coordinates).delete()
+        db.delete(self)
+
     def get_nearby_transporters(self,max_distance=16093):
         """
         Return a list of the transporters available near payload.
