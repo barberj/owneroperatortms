@@ -91,6 +91,7 @@ class Payload(db.Model):
         trackable = Trackable(lat=lat,lon=lon).put()
         self.current_coordinates=Trackable.get(trackable)
         self.coordinates.append(trackable)
+        self.save()
         return self.current_coordinates
 
     def delete(self):
