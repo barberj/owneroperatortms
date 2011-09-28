@@ -69,7 +69,8 @@ class Test(webapp.RequestHandler):
          trans.delete()
         for payload in m.Payload.all():
          payload.delete()
-
+        for trackable in m.Trackable.all():
+         payload.delete()
 
 class Payload(webapp.RequestHandler):
     def delete(self, id):
@@ -91,18 +92,16 @@ class Payload(webapp.RequestHandler):
             logging.info('[Payload] Retrieving %s', payload)
             self.response.out.write(payload)
 
-    def post(self):
+    def post(self,id):
         """
-        Create payload(s)
+        Payloads moving!
         """
-        method = self.request.method
-        if method and method == 'PUT':
-            pass
-        else:
-            logging.info('Lat: %s' % self.request.get('latitude'))
-            logging.info('Long: %s' % self.request.get('longitude'))
-            logging.info('POST')
-            pass
+        lat = self.request.get('latitude')
+        lon = self.request.get('longitude')
+        tracking = m.Payload.get_by_key_name(id)
+        if not tracking:
+            logging.info('Posting Long: %s, Lat: %s' % lon, lat)
+        tracking.update_location(lat=lat, lon=lon)
 
     def put(self):
         """
@@ -132,8 +131,7 @@ class Client(webapp.RequestHandler):
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/payload', Payload),
-                                         # ('/payload/(.*)', Payload),
+                                          ('/payload/(.*)/track', Payload),
                                           ('/test', Test),
                                           ('/client', Client)],
                                          debug=True)
