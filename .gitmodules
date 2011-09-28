@@ -1,0 +1,3 @@
+[submodule "www/gaeutilities"]
+	path = www/gaeutilities
+	url = git@github.com:barberj/gaeutilities.git
