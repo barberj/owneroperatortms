@@ -16,9 +16,13 @@ def hooked_put(models, **kwargs):
             print model 
             model.before_put()
     key = old_put(model, **kwargs)
-    for model in models:
-        if isinstance(model, HookedModel):
-            model.after_put()
+    try:
+        for model in models:
+            if isinstance(model, HookedModel):
+                model.after_put()
+    except TypeError, te:
+        if isinstance(models, HookedModel):
+            models.after_put()
     return key
 db.put = hooked_put
 
