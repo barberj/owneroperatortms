@@ -77,8 +77,8 @@ class InvalidEmailAddress(Exception):
     def __str__(self):
         return "Invalid EmailAddress"
 
-class EmailAddress(HookedModel):
-#class EmailAddress(db.Model):
+#class EmailAddress(HookedModel):
+class EmailAddress(db.Model):
     """
     EmailAddress model.
     """
@@ -95,6 +95,7 @@ class EmailAddress(HookedModel):
         validate its an email
         """
 
+        logging.info('PRE') 
         #validator = Email()
         #return validator(self.emailaddress)
         return True
