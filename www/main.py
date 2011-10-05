@@ -25,6 +25,9 @@ from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
 
 import tms.models as m
+from tms.lib.authenticated import authenticated
+from gaeutilities.appengine_utilities import sessions
+import time
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
@@ -40,7 +43,38 @@ class MainHandler(webapp.RequestHandler):
         logging.info('Posted')
         self.redirect('/add_payload')
 
+class Logout(webapp.RequestHandler):
+    def get(self):
+        session = sessions.Session()
+        logging.info('Logout %s' % session['user'])
+        session.delete()
+        self.redirect('/')
+        time.sleep(1)
+
+    def post(self):
+        logging.info('Login')
+        session = sessions.Session()
+        session['user']='Justin'
+
+class Login(webapp.RequestHandler):
+    def get(self):
+        logging.info('Login')
+        session = sessions.Session()
+        session['user']='Justin'
+        self.redirect('/test')
+        #self.response.out.write(
+        #    template.render('login.html',{})
+        #)
+
+    def post(self):
+        logging.info('Login')
+        session = sessions.Session()
+        session['user']='Justin'
+
+
 class Test(webapp.RequestHandler):
+
+    @authenticated
     def get(self):
         robby = m.Contact(first_name='Robby',last_name='Ranshous').put()
         email = m.EmailAddress(email_type=m.PropertyType.get_by_id(285),contact=m.Contact.get(robby),emailaddress='rranshous@ootms.com').put()
@@ -133,7 +167,9 @@ def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/payload/(.*)/track', Payload),
                                           ('/test', Test),
-                                          ('/client', Client)],
+                                          ('/client', Client),
+                                          ('/logout', Logout),
+                                          ('/login', Login)],
                                          debug=True)
     util.run_wsgi_app(application)
 

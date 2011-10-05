@@ -95,7 +95,6 @@ class EmailAddress(db.Model):
         validate its an email
         """
 
-        logging.info('PRE') 
         #validator = Email()
         #return validator(self.emailaddress)
         return True

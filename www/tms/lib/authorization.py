@@ -2,9 +2,10 @@
 """
 Decorators for verifying users authorization
 """
-from authentication import authenticated
-from decorator import decorator
+import logging
 
+from decorator import decorator
+from authentication import authenticated
 
 @authenticated
 def authorized(func, *args, **kwargs):
@@ -13,6 +14,7 @@ def authorized(func, *args, **kwargs):
     for the requested url
     """
 
+    logging.debug('Authorizing')
     return func(*args, **kwargs)
 
 authorized = decorator(authorized)
