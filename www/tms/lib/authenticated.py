@@ -17,5 +17,4 @@ def authenticated(func, cls, *args, **kwargs):
         logging.info('Not Authnticated')
         cls.redirect('/')
 
-
 authenticated = decorator(authenticated)

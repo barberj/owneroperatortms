@@ -60,14 +60,20 @@ class Login(webapp.RequestHandler):
     def get(self):
         logging.info('Login')
         session = sessions.Session()
-        session['user']='Justin'
-        self.redirect('/test')
-        #self.response.out.write(
-        #    template.render('login.html',{})
-        #)
+
+        if 'user' in session:
+            logging.info('Maybe logged in already')
+
+        self.response.out.write(
+            template.render('login.html',{})
+        )
 
     def post(self):
-        logging.info('Login')
+        logging.info('Logining in')
+        email = m.EmailAddress.gql("Where emailaddress = :emailaddr", emailaddr=self.request.get('usr')).get()
+        if not email or (email and not email.user_set.get()):
+            logging.info('Login issues')
+            self.redirect('/login')
         session = sessions.Session()
         session['user']='Justin'
 
