@@ -1,7 +1,8 @@
-application: owneroperatortms
+application: tentwenty
 version: 1
-runtime: python
+runtime: python27
 api_version: 1
+threadsafe: True
 
 handlers:
 - url: /stylesheets
@@ -13,19 +14,8 @@ handlers:
 - url: /extjs
   static_dir: tms/public/js/ext-4.0.2a
 
-- url: /sencha
-  static_files: sencha.html
-  upload: sencha.html
-
-- url: /streaming
-  script: main_streaming.py
-
-- url: /proto
-  static_files: proto.html
-  upload: proto.html
-
 - url: .*
-  script: main.py
+  script: tentwenty.app 
 
 
 skip_files:
