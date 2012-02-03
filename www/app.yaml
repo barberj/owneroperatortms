@@ -12,7 +12,7 @@ handlers:
   static_dir: tms/public/js
 
 - url: /extjs
-  static_dir: tms/public/js/ext-4.0.2a
+  static_dir: tms/public/js/extjs
 
 - url: .*
   script: tentwenty.app 
