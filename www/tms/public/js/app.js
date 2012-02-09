@@ -28,10 +28,16 @@ Ext.application({
                         ,mapConfOpts: ['enableScrollWheelZoom','enableDoubleClickZoom','enableDragging']
                         ,mapControls: ['GSmallMapControl','GMapTypeControl','NonExistantControl']
                         ,setCenter: {
+                            geoCodeAddr: '320 MLK Jr Drive SE, Atlanta, GA, 30312-2151, USA',
+                            marker: {title: 'Justin'}
+                        }
+                        ,markers: [{
                             geoCodeAddr: '4 Yawkey Way, Boston, MA, 02215-3409, USA',
                             marker: {title: 'Fenway Park'}
-                        }
-                        ,markers: []
+                        },{
+                            geoCodeAddr: '2128 Ridgedale Dr, Atlanta, GA, 30317',
+                            marker: {title: 'David'}
+                        }]
                     },{
                          region:'west'
                         ,html: '<h1 class="x-panel-header">Track</h1>'

@@ -127,8 +127,12 @@ Ext.define('Ext.ux.GMapPanel', {
         
         if (Ext.isArray(markers)){
             for (var i = 0; i < markers.length; i++) {
-                var mkr_point = new GLatLng(markers[i].lat,markers[i].lng);
-                this.addMarker(mkr_point,markers[i].marker,false,markers[i].setCenter, markers[i].listeners);
+                if (typeof markers[i].geoCodeAddr == 'string') {
+                    this.geoCodeLookup(markers[i].geoCodeAddr, markers[i].marker, false, markers[i].setCenter, markers[i].listeners);
+                } else {
+                    var mkr_point = new GLatLng(markers[i].lat,markers[i].lng);
+                    this.addMarker(mkr_point,markers[i].marker,false,markers[i].setCenter, markers[i].listeners);
+                }
             }
         }
         
