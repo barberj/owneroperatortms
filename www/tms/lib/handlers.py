@@ -1,10 +1,11 @@
-import logging
-
 import webapp2
 from webapp2_extras import auth
 from webapp2_extras import sessions
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
+
+import logging
+logging.root.level=logging.DEBUG
 
 class BaseHandler(webapp2.RequestHandler):
     """

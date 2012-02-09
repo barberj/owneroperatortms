@@ -26,8 +26,6 @@ OR:
 Change the urls in BaseHandler.auth_config to match LoginHandler/LogoutHandler
 And also change the url in the post method of the LoginHandler to redirect to to a page requiring a user session
 """
-import logging
-
 import webapp2
 from webapp2_extras import auth
 from webapp2_extras import sessions
@@ -36,6 +34,9 @@ from webapp2_extras.auth import InvalidPasswordError
 from google.appengine.ext.webapp import template
 
 from tms.lib.handlers import BaseHandler
+
+import logging
+logging.root.level=logging.DEBUG
 
 class MainHandler(BaseHandler):
     def get(self, **kwargs):

@@ -1,4 +1,4 @@
-application: tentwenty
+application: owneroperatortms
 version: 1
 runtime: python27
 api_version: 1
@@ -26,10 +26,8 @@ skip_files:
 - ^(.*/)?#.*#
 - ^(.*/)?.*~
 - ^(.*/)?.*\.py[co]
-- ^(.*/)?.*/ext-4.0.2a/examples
+- ^(.*/)?.*/debug-extjs
+- ^(.*/)?.*/tests
 - ^(.*/)?\..*
 - ^(.*/)?.*\.bak$
-- ^(.*/)?.*/ext-4.0.2a/examples
-- ^(.*/)?.*/ext-4.0.2a/welcome
-- ^(.*/)?.*/ext-4.0.2a/build[s]
-- ^(.*/)?.*/ext-4.0.2a/jsbuilder
+- ^(.*/)?.*\.jsb3
