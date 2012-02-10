@@ -13,23 +13,11 @@ call sencha build -p www\tms\public\js\app.jsb3 -d www\tms\public\js\.
 
 :: After BUILD we want to make PROD
 :MAKEPROD
-echo Make Prod
-move www\tms\public\js\extjs www\tms\public\js\debug-extjs
-move www\tms\public\js\prod-extjs www\tms\public\js\extjs
-
-move www\tms\templates\header.html www\tms\templates\debug-header.html
-move www\tms\templates\prod-header.html www\tms\templates\header.html
-
+call toggle_env.bat
 GOTO END
 
 :MAKEDEBUG
-echo Make Debug
-move www\tms\public\js\extjs www\tms\public\js\prod-extjs
-move www\tms\public\js\debug-extjs www\tms\public\js\extjs
-
-move www\tms\templates\header.html www\tms\templates\prod-header.html
-move www\tms\templates\debug-header.html www\tms\templates\header.html 
-
+call toggle_env.bat
 :: Now that we are in DEBUG we can BUILD
 GOTO BUILD
 
