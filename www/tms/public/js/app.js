@@ -4,14 +4,15 @@ Ext.application({
     name: 'TenTwenty'
     ,launch: function() {
         Ext.create('Ext.container.Viewport', {
-            items: [{
+            layout:'border'
+            ,items: [{
                 region: 'north'
                 ,title: 'Account'
                 ,html: '<h1 class="x-panel-header">Account Stuff</h1>'
-                ,titleCollapse: true
-                ,collapsible: true
                 ,collapsed: true
-                ,border: false
+                ,collapsible: true
+                ,titleCollapse: false
+                ,height: 100
                 ,margins: '0 0 5 0'
             }, {
                 region: 'center'
