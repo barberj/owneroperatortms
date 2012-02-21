@@ -1,5 +1,4 @@
-Ext.require(['Ext.container.Viewport', 
-             'Ext.ux.GMapPanel']);
+Ext.require(['Ext.container.Viewport']);
 Ext.application({
     name: 'TenTwenty'
     ,launch: function() {

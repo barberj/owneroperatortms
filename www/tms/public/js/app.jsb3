@@ -38,10 +38,6 @@
                     "name": "validations.js"
                 },
                 {
-                    "path": "extjs/src/",
-                    "name": "ZIndexManager.js"
-                },
-                {
                     "path": "extjs/src/form/field/",
                     "name": "VTypes.js"
                 },
@@ -82,10 +78,6 @@
                     "name": "Offset.js"
                 },
                 {
-                    "path": "extjs/src/util/",
-                    "name": "Floating.js"
-                },
-                {
                     "path": "extjs/src/",
                     "name": "ComponentQuery.js"
                 },
@@ -96,6 +88,10 @@
                 {
                     "path": "extjs/src/form/field/",
                     "name": "Field.js"
+                },
+                {
+                    "path": "extjs/src/util/",
+                    "name": "Floating.js"
                 },
                 {
                     "path": "extjs/src/layout/container/boxOverflow/",
@@ -112,6 +108,10 @@
                 {
                     "path": "extjs/src/dd/",
                     "name": "StatusProxy.js"
+                },
+                {
+                    "path": "extjs/src/",
+                    "name": "ZIndexManager.js"
                 },
                 {
                     "path": "extjs/src/data/",
@@ -282,10 +282,6 @@
                     "name": "Anchor.js"
                 },
                 {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Auto.js"
-                },
-                {
                     "path": "extjs/src/dd/",
                     "name": "DragDropManager.js"
                 },
@@ -330,6 +326,10 @@
                     "name": "Anim.js"
                 },
                 {
+                    "path": "extjs/src/layout/container/",
+                    "name": "Auto.js"
+                },
+                {
                     "path": "extjs/src/",
                     "name": "PluginManager.js"
                 },
@@ -370,28 +370,12 @@
                     "name": "Component.js"
                 },
                 {
-                    "path": "extjs/src/container/",
-                    "name": "AbstractContainer.js"
-                },
-                {
-                    "path": "extjs/src/container/",
-                    "name": "Container.js"
-                },
-                {
-                    "path": "extjs/src/container/",
-                    "name": "Viewport.js"
-                },
-                {
                     "path": "extjs/src/button/",
                     "name": "Button.js"
                 },
                 {
                     "path": "extjs/src/",
                     "name": "ProgressBar.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "Header.js"
                 },
                 {
                     "path": "extjs/src/toolbar/",
@@ -408,6 +392,22 @@
                 {
                     "path": "extjs/src/form/field/",
                     "name": "TextArea.js"
+                },
+                {
+                    "path": "extjs/src/container/",
+                    "name": "AbstractContainer.js"
+                },
+                {
+                    "path": "extjs/src/container/",
+                    "name": "Container.js"
+                },
+                {
+                    "path": "extjs/src/container/",
+                    "name": "Viewport.js"
+                },
+                {
+                    "path": "extjs/src/panel/",
+                    "name": "Header.js"
                 },
                 {
                     "path": "extjs/src/toolbar/",
@@ -474,10 +474,6 @@
                     "name": "MessageBox.js"
                 },
                 {
-                    "path": "extjs/src/ux/",
-                    "name": "GMapPanel.js"
-                },
-                {
                     "path": "extjs/src/tip/",
                     "name": "Tip.js"
                 },
@@ -522,20 +518,20 @@
                     "name": "Application.js"
                 },
                 {
-                    "path": "extjs/src/util/",
-                    "name": "Point.js"
-                },
-                {
-                    "path": "extjs/src/resizer/",
-                    "name": "Resizer.js"
-                },
-                {
                     "path": "extjs/src/panel/",
                     "name": "Tool.js"
                 },
                 {
+                    "path": "extjs/src/util/",
+                    "name": "Point.js"
+                },
+                {
                     "path": "extjs/src/",
                     "name": "Layer.js"
+                },
+                {
+                    "path": "extjs/src/resizer/",
+                    "name": "Resizer.js"
                 },
                 {
                     "path": "extjs/src/util/",
@@ -566,20 +562,28 @@
                     "name": "Draw.js"
                 },
                 {
-                    "path": "extjs/src/layout/container/",
-                    "name": "AbstractFit.js"
+                    "path": "extjs/src/data/",
+                    "name": "AbstractStore.js"
                 },
                 {
                     "path": "extjs/src/util/",
                     "name": "Grouper.js"
                 },
                 {
-                    "path": "extjs/src/data/",
-                    "name": "AbstractStore.js"
+                    "path": "extjs/src/layout/container/",
+                    "name": "AbstractFit.js"
                 },
                 {
                     "path": "extjs/src/draw/",
                     "name": "CompositeSprite.js"
+                },
+                {
+                    "path": "extjs/src/data/",
+                    "name": "Store.js"
+                },
+                {
+                    "path": "extjs/src/data/",
+                    "name": "ArrayStore.js"
                 },
                 {
                     "path": "extjs/src/layout/container/",
@@ -594,14 +598,6 @@
                     "name": "Menu.js"
                 },
                 {
-                    "path": "extjs/src/data/",
-                    "name": "Store.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "ArrayStore.js"
-                },
-                {
                     "path": "extjs/src/draw/",
                     "name": "Surface.js"
                 },
@@ -610,24 +606,24 @@
                     "name": "Component.js"
                 },
                 {
-                    "path": "extjs/src/resizer/",
-                    "name": "ResizeTracker.js"
-                },
-                {
                     "path": "extjs/src/data/reader/",
                     "name": "Array.js"
+                },
+                {
+                    "path": "extjs/src/resizer/",
+                    "name": "ResizeTracker.js"
                 },
                 {
                     "path": "extjs/src/",
                     "name": "ShadowPool.js"
                 },
                 {
-                    "path": "extjs/src/draw/",
-                    "name": "Matrix.js"
-                },
-                {
                     "path": "extjs/src/data/proxy/",
                     "name": "Client.js"
+                },
+                {
+                    "path": "extjs/src/draw/",
+                    "name": "Matrix.js"
                 },
                 {
                     "path": "extjs/src/draw/",
@@ -664,6 +660,10 @@
                 {
                     "path": "extjs/src/resizer/",
                     "name": "SplitterTracker.js"
+                },
+                {
+                    "path": "",
+                    "name": "GMapPanel.js"
                 }
             ]
         },
