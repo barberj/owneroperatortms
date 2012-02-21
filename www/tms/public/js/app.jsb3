@@ -22,6 +22,10 @@
                     "name": "Memento.js"
                 },
                 {
+                    "path": "extjs/src/data/",
+                    "name": "Association.js"
+                },
+                {
                     "path": "extjs/src/util/",
                     "name": "Observable.js"
                 },
@@ -32,10 +36,6 @@
                 {
                     "path": "extjs/src/data/",
                     "name": "validations.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Association.js"
                 },
                 {
                     "path": "extjs/src/",
@@ -66,16 +66,12 @@
                     "name": "Proxy.js"
                 },
                 {
-                    "path": "extjs/src/data/",
-                    "name": "SortTypes.js"
-                },
-                {
                     "path": "extjs/src/util/",
                     "name": "HashMap.js"
                 },
                 {
-                    "path": "extjs/src/util/",
-                    "name": "Floating.js"
+                    "path": "extjs/src/data/",
+                    "name": "SortTypes.js"
                 },
                 {
                     "path": "extjs/src/dd/",
@@ -84,6 +80,10 @@
                 {
                     "path": "extjs/src/util/",
                     "name": "Offset.js"
+                },
+                {
+                    "path": "extjs/src/util/",
+                    "name": "Floating.js"
                 },
                 {
                     "path": "extjs/src/",
@@ -566,28 +566,20 @@
                     "name": "Draw.js"
                 },
                 {
-                    "path": "extjs/src/data/",
-                    "name": "AbstractStore.js"
+                    "path": "extjs/src/layout/container/",
+                    "name": "AbstractFit.js"
                 },
                 {
                     "path": "extjs/src/util/",
                     "name": "Grouper.js"
                 },
                 {
-                    "path": "extjs/src/layout/container/",
-                    "name": "AbstractFit.js"
+                    "path": "extjs/src/data/",
+                    "name": "AbstractStore.js"
                 },
                 {
                     "path": "extjs/src/draw/",
                     "name": "CompositeSprite.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Store.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "ArrayStore.js"
                 },
                 {
                     "path": "extjs/src/layout/container/",
@@ -600,6 +592,14 @@
                 {
                     "path": "extjs/src/menu/",
                     "name": "Menu.js"
+                },
+                {
+                    "path": "extjs/src/data/",
+                    "name": "Store.js"
+                },
+                {
+                    "path": "extjs/src/data/",
+                    "name": "ArrayStore.js"
                 },
                 {
                     "path": "extjs/src/draw/",
@@ -618,12 +618,12 @@
                     "name": "Array.js"
                 },
                 {
-                    "path": "extjs/src/draw/",
-                    "name": "Matrix.js"
-                },
-                {
                     "path": "extjs/src/",
                     "name": "ShadowPool.js"
+                },
+                {
+                    "path": "extjs/src/draw/",
+                    "name": "Matrix.js"
                 },
                 {
                     "path": "extjs/src/data/proxy/",
@@ -647,11 +647,11 @@
                 },
                 {
                     "path": "extjs/src/draw/engine/",
-                    "name": "Vml.js"
+                    "name": "Svg.js"
                 },
                 {
                     "path": "extjs/src/draw/engine/",
-                    "name": "Svg.js"
+                    "name": "Vml.js"
                 },
                 {
                     "path": "extjs/src/resizer/",

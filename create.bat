@@ -3,7 +3,7 @@ rem Windows Batch file to build and minimize current javascript files
 
 :: If the debug-extjs directory exists we are in PROD mode
 :: Lets set everything up as DEBUG to compile
-IF EXIST www\tms\public\js\debug-extjs GOTO MAKEDEBUG
+IF EXIST www\tms\templates\debug-header.html GOTO MAKEDEBUG
 
 :BUILD
 :: http://www.sencha.com/learn/getting-started-with-ext-js-4/

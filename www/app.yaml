@@ -8,6 +8,9 @@ handlers:
 - url: /stylesheets
   static_dir: tms/public/stylesheets
 
+- url: /resources
+  static_dir: tms/public/resources
+
 - url: /js
   static_dir: tms/public/js
 
@@ -26,7 +29,7 @@ skip_files:
 - ^(.*/)?#.*#
 - ^(.*/)?.*~
 - ^(.*/)?.*\.py[co]
-- ^(.*/)?.*/debug-extjs
+- ^(.*/)?.*/extjs
 - ^(.*/)?.*/tests
 - ^(.*/)?\..*
 - ^(.*/)?.*\.bak$

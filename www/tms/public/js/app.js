@@ -9,9 +9,7 @@ Ext.application({
                 region: 'north'
                 ,title: 'Account'
                 ,html: '<h1 class="x-panel-header">Account Stuff</h1>'
-                ,collapsed: true
-                ,collapsible: true
-                ,titleCollapse: false
+                ,collapsible: false
                 ,height: 100
                 ,margins: '0 0 5 0'
             }, {
