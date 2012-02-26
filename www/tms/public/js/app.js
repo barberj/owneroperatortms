@@ -22,7 +22,6 @@ Ext.application({
                         ,region:'center'
                         ,gmapType: 'map'
                         ,zoomLevel: 14
-                        ,layout:'fit'
                         ,mapConfOpts: ['enableScrollWheelZoom','enableDoubleClickZoom','enableDragging']
                         ,mapControls: ['GSmallMapControl','GMapTypeControl','NonExistantControl']
                         ,setCenter: {
