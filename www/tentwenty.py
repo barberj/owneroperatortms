@@ -34,6 +34,7 @@ webapp2_config = {
 
 app = webapp2.WSGIApplication([
     webapp2.Route(r'/', handler=MainHandler, name='main'),
-#    webapp2.Route(r'/login', handler=LoginHandler, name='login'),
-#    webapp2.Route(r'/logout', handler=LogoutHandler, name='logout'),
+    webapp2.Route(r'/login', handler=LoginHandler, name='login'),
+    webapp2.Route(r'/logout', handler=LogoutHandler, name='logout'),
+    webapp2.Route(r'/user/new', handler=CreateUserHandler, name='newuser'),
 ], debug=True, config=webapp2_config)

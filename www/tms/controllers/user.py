@@ -28,39 +28,33 @@ And also change the url in the post method of the LoginHandler to redirect to to
 """
 
 from tms.lib.handlers import *
-
+from google.appengine.api import users
 import logging
 
-class MainHandler(BaseHandler):
-    @authenticated
-    def get(self, **kwargs):
-        """
-        """
-        return template.render('tms/templates/index.html',
-                                {})
-
-class LoginHandler(BaseHandler):
+class CreateUserHandler(BaseHandler):
     def get(self):
         """
-        Returns a simple HTML form for login
+        Returns a simple HTML form for create a new user
         """
+        user = users.get_current_user()
         return """
             <!DOCTYPE hml>
             <html>
                 <head>
-                    <title>Ten Twenty</title>
+                    <title>Create User</title>
                 </head>
                 <body>
+                Welcome %s <a href="%s">Log Out</a>.</p>
                 <form action="%s" method="post">
                     <fieldset>
-                        <legend>Please Login</legend>
-                        <label>Username <input type="text" name="username" placeholder="Your username" /></label>
+                        <legend>Create user form</legend>
+                        <label>Email <input type="text" name="username" placeholder="Your username" /></label>
                         <label>Password <input type="password" name="password" placeholder="Your password" /></label>
                     </fieldset>
-                    <button>Login</button>
+                    <button>Create user</button>
                 </form>
             </html>
-        """ % self.request.url
+        """ % (user.nickname(), users.create_logout_url('/'), self.request.url)
 
     def post(self):
         """
@@ -69,17 +63,14 @@ class LoginHandler(BaseHandler):
         """
         username = self.request.POST.get('username')
         password = self.request.POST.get('password')
-        # Try to login user with password
-        # Raises InvalidAuthIdError if user is not found
-        # Raises InvalidPasswordError if provided password doesn't match with specified user
-        try:
-            self.auth.get_user_by_password(username, password)
-            self.redirect('/')
-        except (InvalidAuthIdError, InvalidPasswordError), e:
-            logging.error('Unable to authenticate %s with credentials %s', username, password)
-            #return "The username or password you entered is incorrect. <a href='%s'>Forgot your password<?/a>" % self.uri_for('forgot')
-            return "The username or password you entered is incorrect. <a href='%s'>Forgot your password<?/a>" % 'i forgot'
-
-
-class LogoutHandler(BaseHandler):
-    pass
+        # Passing password_raw=password so password will be hashed
+        # Returns a tuple, where first value is BOOL. If True ok, If False no new user is created
+        user = self.auth.store.user_model.create_user(username, password_raw=password)
+        if not user[0]: #user is a tuple
+            return 'The email address you are trying to register has already been taken.'
+        else:
+            # User is created, let's try redirecting to login page
+            try:
+                self.redirect(self.auth_config['login_url'], abort=True)
+            except (AttributeError, KeyError), e:
+                self.abort(403)

@@ -17,6 +17,10 @@ handlers:
 - url: /extjs
   static_dir: tms/public/js/extjs
 
+- url: /user/new 
+  script: tentwenty.app 
+  login: admin
+
 - url: .*
   script: tentwenty.app 
 
@@ -33,4 +37,5 @@ skip_files:
 - ^(.*/)?.*/tests
 - ^(.*/)?\..*
 - ^(.*/)?.*\.bak$
+- ^(.*/)?.*\.bck$
 - ^(.*/)?.*\.jsb3

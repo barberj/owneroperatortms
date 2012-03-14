@@ -8,8 +8,9 @@ from google.appengine.ext import db
 Trackable model
 - capable of being traced or tracked
 """
-import geo.geomodel
-class Trackable(geo.geomodel.GeoModel):
+#import geo.geomodel
+#class Trackable(geo.geomodel.GeoModel):
+class Trackable(db.Model):
     """
     Trackable model.
     """
