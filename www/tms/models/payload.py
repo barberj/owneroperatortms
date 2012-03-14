@@ -12,6 +12,8 @@ from transporter import Transporter
 Trackable model
 - capable of being traced or tracked
 """
+#import geo.geomodel
+#class Trackable(geo.geomodel.GeoModel):
 class Trackable(db.Model):
     """
     Trackable model.
@@ -80,7 +82,7 @@ class Payload(db.Model):
         if self.current_coordinates:
             return 'Payload[%s] at Longitude %s, Latitude %s' % ( self.key().id(),
                                                                   self.current_coordinates.coordinates.lon,
-                                                                  self.current_coordinates.coordinates.lat ) 
+                                                                  self.current_coordinates.coordinates.lat )
         return 'Payload[%s] coordinates are unknown' % self.key().id()
 
     def update_location(self, lat, lon):

@@ -1,31 +1,28 @@
 application: owneroperatortms
 version: 1
-runtime: python
+runtime: python27
 api_version: 1
+threadsafe: True
 
 handlers:
 - url: /stylesheets
   static_dir: tms/public/stylesheets
 
+- url: /resources
+  static_dir: tms/public/resources
+
 - url: /js
   static_dir: tms/public/js
 
 - url: /extjs
-  static_dir: tms/public/js/ext-4.0.2a
+  static_dir: tms/public/js/extjs
 
-- url: /sencha
-  static_files: sencha.html
-  upload: sencha.html
-
-- url: /streaming
-  script: main_streaming.py
-
-- url: /proto
-  static_files: proto.html
-  upload: proto.html
+- url: /user/new 
+  script: tentwenty.app 
+  login: admin
 
 - url: .*
-  script: main.py
+  script: tentwenty.app 
 
 
 skip_files:
@@ -36,10 +33,9 @@ skip_files:
 - ^(.*/)?#.*#
 - ^(.*/)?.*~
 - ^(.*/)?.*\.py[co]
-- ^(.*/)?.*/ext-4.0.2a/examples
+- ^(.*/)?.*/extjs
+- ^(.*/)?.*/tests
 - ^(.*/)?\..*
 - ^(.*/)?.*\.bak$
-- ^(.*/)?.*/ext-4.0.2a/examples
-- ^(.*/)?.*/ext-4.0.2a/welcome
-- ^(.*/)?.*/ext-4.0.2a/build[s]
-- ^(.*/)?.*/ext-4.0.2a/jsbuilder
+- ^(.*/)?.*\.bck$
+- ^(.*/)?.*\.jsb3

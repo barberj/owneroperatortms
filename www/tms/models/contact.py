@@ -2,7 +2,7 @@
 """
 User model
 - uses or operates something
-    In this case the user model is the credentials a 
+    In this case the user model is the credentials a
        user would use to access the system.
     User can be associated with broker, transporter, or broker_client
        via a contact.
@@ -20,7 +20,7 @@ class PropertyType(db.Model):
     """
 
     ptype = db.StringProperty()
-    
+
     def __str__(self):
         """
         Return string representation
@@ -64,16 +64,16 @@ class Contact(db.Model):
             email.delete()
 
         for phone_num in self.phone_numbers:
-            phone_num.delete() 
+            phone_num.delete()
 
         for address in self.addresses:
             address.delete()
 
-        # finally delete self 
+        # finally delete self
         db.delete(self)
 
 class InvalidEmailAddress(Exception):
-    
+
     def __str__(self):
         return "Invalid EmailAddress"
 
@@ -83,9 +83,9 @@ class EmailAddress(db.Model):
     EmailAddress model.
     """
 
-    email_type = db.ReferenceProperty(PropertyType)
+    #email_type = db.ReferenceProperty(PropertyType)
     emailaddress = db.EmailProperty()
-    contact = db.ReferenceProperty(Contact,collection_name='emailaddresses')
+    #contact = db.ReferenceProperty(Contact,collection_name='emailaddresses')
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
 
@@ -103,11 +103,11 @@ class EmailAddress(db.Model):
         """
         Save to Datastore
         """
-        
+
         if self.before_put():
             return super(EmailAddress,self).put(**kwargs)
         else:
-            raise InvalidEmailAddress() 
+            raise InvalidEmailAddress()
 
     def __str__(self):
         return self.emailaddress
@@ -118,21 +118,21 @@ class EmailAddress(db.Model):
         """
 
         # delete all relations
-        # in reality there should 
+        # in reality there should
         # only be one user in the set
         for user in self.user_set:
             user.delete()
 
         # finally delete self
         db.delete(self)
-        
+
 
 class PhoneNumber(db.Model):
     """
     PhoneNumber model.
     """
-    
-    phone_type = db.ReferenceProperty(PropertyType)
+
+    #phone_type = db.ReferenceProperty(PropertyType)
     phone_number = db.PhoneNumberProperty(required=True)
     contact = db.ReferenceProperty(Contact,collection_name='phone_numbers')
     created_at = db.DateTimeProperty(auto_now_add=True)
@@ -145,5 +145,6 @@ class User(db.Model):
 
     username = db.ReferenceProperty(EmailAddress)
     password = db.StringProperty()
+    last_logged_in_at = db.DateTimeProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now=True)
